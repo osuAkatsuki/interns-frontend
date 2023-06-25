@@ -8,6 +8,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
 import { ProfilePage } from "./pages/ProfilePage";
@@ -36,16 +37,27 @@ const router = createBrowserRouter(
   )
 );
 
-// TODO: custom MUI theme provider
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#1678c2",
+    },
+    secondary: {
+      main: "#e03997",
+    },
+  },
+});
 
 export default function App() {
   return (
     <React.StrictMode>
-      <UserContextProvider>
-        <Container>
-          <RouterProvider router={router} />
-        </Container>
-      </UserContextProvider>
+      <ThemeProvider theme={theme}>
+        <UserContextProvider>
+          <Container>
+            <RouterProvider router={router} />
+          </Container>
+        </UserContextProvider>
+      </ThemeProvider>
     </React.StrictMode>
   );
 }
