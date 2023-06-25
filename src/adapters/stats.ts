@@ -3,7 +3,7 @@ import type { Success, Failure } from "../interfaces/api";
 
 // TODO: implement retry logic
 
-const mapToSuccessModel = (responseData: any): Success<Stats> => {
+const deserializeSuccessResponse = (responseData: any): Success<Stats> => {
   return {
     status: "success",
     data: {
@@ -24,10 +24,15 @@ const mapToSuccessModel = (responseData: any): Success<Stats> => {
       sCount: responseData.data.s_count,
       aCount: responseData.data.a_count,
     },
+    meta: {
+      page: responseData.meta.page,
+      pageSize: responseData.meta.page_size,
+      total: responseData.meta.total,
+    },
   };
 };
 
-const mapToFailureModel = (responseData: any): Failure => {
+const deserializeFailureResponse = (responseData: any): Failure => {
   return {
     status: "error",
     error: responseData.error,
@@ -50,19 +55,15 @@ export const fetchOne = async (
         },
       }
     );
-    const responseData = await response.json();
-    if (!response.ok) {
+    const responseData: Success<Stats> | Failure = await response.json();
+    if (!response.ok || responseData.status !== "success") {
       console.error(
         "An error occurred while processing the response.",
         responseData
       );
-      return {
-        status: "error",
-        error: (responseData as Failure).error,
-        message: (responseData as Failure).message,
-      };
+      return deserializeFailureResponse(responseData);
     }
-    return mapToSuccessModel(responseData);
+    return deserializeSuccessResponse(responseData);
   } catch (error) {
     console.error("An error occurred while fetching the account.", error);
     return {
@@ -88,21 +89,17 @@ export const fetchMany = async (
         },
       }
     );
-    const responseData = await response.json();
-    if (!response.ok) {
+    const responseData: Success<Stats[]> | Failure = await response.json();
+    if (!response.ok || responseData.status !== "success") {
       console.error(
         "An error occurred while processing the response.",
         responseData
       );
-      return {
-        status: "error",
-        error: (responseData as Failure).error,
-        message: (responseData as Failure).message,
-      };
+      return deserializeFailureResponse(responseData);
     }
     return {
       status: "success",
-      data: responseData.data.stats.map((stats: any) => {
+      data: responseData.data.map((stats: any) => {
         return {
           accountId: stats.account_id,
           gameMode: stats.game_mode,
@@ -122,6 +119,11 @@ export const fetchMany = async (
           aCount: stats.a_count,
         };
       }),
+      meta: {
+        page: responseData.meta.page,
+        pageSize: responseData.meta.page_size,
+        total: responseData.meta.total,
+      },
     };
   } catch (error) {
     console.error("An error occurred while fetching the accounts.", error);

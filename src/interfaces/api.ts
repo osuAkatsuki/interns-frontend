@@ -1,7 +1,7 @@
 export interface Success<T> {
   status: "success";
   data: T;
-  meta?: Record<string, any>;
+  meta: Record<string, any>;
 }
 
 export interface Failure {
