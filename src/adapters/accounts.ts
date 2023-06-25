@@ -8,7 +8,7 @@ const mapToSuccessModel = (responseData: any): Success<Account> => {
     status: "success",
     data: {
       accountId: responseData.data.account_id,
-      phoneNumber: responseData.data.phone_number,
+      username: responseData.data.username,
       firstName: responseData.data.first_name,
       lastName: responseData.data.last_name,
       status: responseData.data.status,
@@ -26,7 +26,7 @@ const mapToFailureModel = (responseData: any): Failure => {
 };
 
 export const createAccount = async (
-  phoneNumber: string,
+  username: string,
   password: string,
   firstName: string,
   lastName: string
@@ -39,7 +39,7 @@ export const createAccount = async (
         "User-Agent": "basic-frontend/v0.0.1",
       },
       body: JSON.stringify({
-        phone_number: phoneNumber,
+        username: username,
         password: password,
         first_name: firstName,
         last_name: lastName,

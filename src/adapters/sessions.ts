@@ -24,18 +24,18 @@ const mapToFailureModel = (responseData: any): Failure => {
 };
 
 export const login = async (
-  phoneNumber: string,
+  username: string,
   password: string
 ): Promise<Success<Session> | Failure> => {
   try {
-  const response = await fetch("http://localhost:10000/v1/sessions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "User-Agent": "basic-frontend/v0.0.1",
-    },
-    body: JSON.stringify({ phone_number: phoneNumber, password: password }),
-  });
+    const response = await fetch("http://localhost:10000/v1/sessions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+      body: JSON.stringify({ username: username, password: password }),
+    });
     const responseData = await response.json();
     if (responseData.status === "success") {
       return mapToSuccessModel(responseData);

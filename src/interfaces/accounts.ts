@@ -1,6 +1,6 @@
 export type Account = {
   accountId: string;
-  phoneNumber: string;
+  username: string;
   firstName: string;
   lastName: string;
   status: string;
