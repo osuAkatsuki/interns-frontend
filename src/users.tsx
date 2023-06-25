@@ -28,6 +28,8 @@ interface Props {
   children: React.ReactNode;
 }
 
+// TODO: store user data in cookies as opposed to local storage
+
 export const UserContextProvider: React.FC<Props> = ({ children }) => {
   const [user, setUser] = React.useState<User | undefined>(
     (() => {
