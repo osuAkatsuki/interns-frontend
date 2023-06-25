@@ -11,6 +11,8 @@ import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { LeaderboardsPage } from "./pages/LeaderboardsPage";
+import { SupportPage } from "./pages/SupportPage";
 import Container from "@mui/material/Container";
 import { UserContextProvider } from "./users";
 
@@ -27,7 +29,9 @@ const router = createBrowserRouter(
       <Route path="/" element={<HomePage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/leaderboards" element={<LeaderboardsPage />} />
       <Route path="/profile/:accountId" element={<ProfilePage />} />
+      <Route path="/support" element={<SupportPage />} />
     </Route>
   )
 );

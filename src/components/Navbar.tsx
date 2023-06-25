@@ -23,12 +23,23 @@ export default function Navbar() {
             <Typography variant="h6">Akatsuki</Typography>
           </Button>
         </Link>
+        <Link to="/leaderboards">
+          <Button>
+            <Typography variant="h6">Leaderboards</Typography>
+          </Button>
+        </Link>
       </Box>
       {/* Right Navbar */}
       <Stack direction="row" spacing={1}>
-        {/* TODO: add search bar */}
+        {/* TODO: add user search bar */}
         {user ? (
           <>
+            <Link to="/support">
+              <Button>
+                {/* TODO: heart emoji */}
+                <Typography variant="h6">Support</Typography>
+              </Button>
+            </Link>
             <Link to={`/profile/${user.account.accountId}`}>
               <Button>
                 <Typography variant="h6">{user.account.firstName}</Typography>
