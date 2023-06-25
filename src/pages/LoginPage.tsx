@@ -7,8 +7,11 @@ import { useUserContext } from "../users";
 import { login } from "../adapters/sessions";
 import { fetchOneAccount } from "../adapters/accounts";
 import { Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+
   const { user, setUser } = useUserContext();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -41,6 +44,9 @@ export const LoginPage = () => {
       session: sessionResponse.data,
       account: accountResponse.data,
     });
+    // Redirect the user to "/" once they've logged in
+    // TODO: can i display a success alert on the homepage?
+    navigate("/", { replace: true });
   };
 
   return (
@@ -67,7 +73,6 @@ export const LoginPage = () => {
       <Button variant="outlined" onClick={handleLogin}>
         <Typography>Submit login</Typography>
       </Button>
-      {user && <Typography>Logged in as {user?.session.sessionId}</Typography>}
     </Stack>
   );
 };

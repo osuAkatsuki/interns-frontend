@@ -7,8 +7,11 @@ import { createAccount } from "../adapters/accounts";
 import { login } from "../adapters/sessions";
 import { useUserContext } from "../users";
 import { Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export const SignupPage = () => {
+  const navigate = useNavigate();
+
   const { user, setUser } = useUserContext();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -47,6 +50,9 @@ export const SignupPage = () => {
       session: sessionResponse.data,
       account: account,
     });
+    // Redirect the user to "/" once they've signed up
+    // TODO: can i display a success alert on the homepage?
+    navigate("/", { replace: true });
   };
 
   return (
