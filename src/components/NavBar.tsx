@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import Link from "@mui/material/Link";
 import { useSessionContext } from "../sessions";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
   const { session } = useSessionContext();
@@ -18,7 +18,7 @@ export default function NavBar() {
     >
       {/* Left Navbar */}
       <Box>
-        <Link href="/">
+        <Link to="/">
           <Button>
             <Typography variant="h6">Akatsuki</Typography>
           </Button>
@@ -29,7 +29,7 @@ export default function NavBar() {
         {/* TODO: add search bar */}
         {session ? (
           <>
-            <Link href="/profile">
+            <Link to="/profile">
               <Button>
                 <Typography variant="h6">{session?.firstName}</Typography>
               </Button>
@@ -37,12 +37,12 @@ export default function NavBar() {
           </>
         ) : (
           <>
-            <Link href="/login">
+            <Link to="/login">
               <Button>
                 <Typography variant="h6">Login</Typography>
               </Button>
             </Link>
-            <Link href="/signup">
+            <Link to="/signup">
               <Button>
                 <Typography variant="h6">Signup</Typography>
               </Button>
