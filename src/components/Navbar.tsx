@@ -29,9 +29,9 @@ export default function Navbar() {
         {/* TODO: add search bar */}
         {user ? (
           <>
-            <Link to="/profile">
+            <Link to={`/profile/${user.account.accountId}`}>
               <Button>
-                <Typography variant="h6">{user?.account.firstName}</Typography>
+                <Typography variant="h6">{user.account.firstName}</Typography>
               </Button>
             </Link>
           </>
