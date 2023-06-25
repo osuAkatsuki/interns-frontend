@@ -130,9 +130,11 @@ export const fetchManyOsuSessions = async (page: number, pageSize: number) => {
             updatedAt: new Date(osuSession.updated_at),
           };
         }),
-        page: responseData.meta.page,
-        pageSize: responseData.meta.page_size,
-        total: responseData.meta.total,
+        meta: {
+          page: responseData.meta.page,
+          pageSize: responseData.meta.page_size,
+          total: responseData.meta.total,
+        },
       };
     }
     return {
