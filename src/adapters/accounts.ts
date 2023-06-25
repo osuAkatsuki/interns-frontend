@@ -20,7 +20,7 @@ const mapToSuccessModel = (responseData: any): Success<Account> => {
 
 const mapToFailureModel = (responseData: any): Failure => {
   return {
-    status: "failure",
+    status: "error",
     error: responseData.error,
   };
 };
@@ -46,9 +46,12 @@ export const createAccount = async (
       }),
     });
     if (!response.ok) {
-      console.error("An error occurred while processing the response.");
+      console.error(
+        "An error occurred while processing the response.",
+        await response.text()
+      );
       return {
-        status: "failure",
+        status: "error",
         error: "An error occurred while processing the response.",
       };
     }
@@ -60,7 +63,7 @@ export const createAccount = async (
     }
   } catch (error) {
     return {
-      status: "failure",
+      status: "error",
       error: "An unhandled error occurred while processing the response.",
     };
   }
@@ -81,9 +84,12 @@ export const fetchOneAccount = async (
       }
     );
     if (!response.ok) {
-      console.error("An error occurred while processing the response.");
+      console.error(
+        "An error occurred while processing the response.",
+        await response.text()
+      );
       return {
-        status: "failure",
+        status: "error",
         error: "An error occurred while processing the response.",
       };
     }
@@ -95,7 +101,7 @@ export const fetchOneAccount = async (
     }
   } catch (error) {
     return {
-      status: "failure",
+      status: "error",
       error: "An unhandled error occurred while processing the response.",
     };
   }
@@ -114,9 +120,12 @@ export const fetchManyAccounts = async (page: number, pageSize: number) => {
       }
     );
     if (!response.ok) {
-      console.error("An error occurred while processing the response.");
+      console.error(
+        "An error occurred while processing the response.",
+        await response.text()
+      );
       return {
-        status: "failure",
+        status: "error",
         error: "An error occurred while processing the response.",
       };
     }
@@ -141,12 +150,12 @@ export const fetchManyAccounts = async (page: number, pageSize: number) => {
       };
     }
     return {
-      status: "failure",
+      status: "error",
       error: responseData.error,
     };
   } catch (error) {
     return {
-      status: "failure",
+      status: "error",
       error: "An unhandled error occurred while processing the response.",
     };
   }

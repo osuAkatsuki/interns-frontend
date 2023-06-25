@@ -5,7 +5,7 @@ export interface Success<T> {
 }
 
 export interface Failure {
-  status: "failure";
+  status: "error";
   error: string;
   meta?: Record<string, any>;
 }

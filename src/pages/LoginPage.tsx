@@ -14,14 +14,14 @@ export const LoginPage = () => {
 
   const handleLogin = async () => {
     const sessionResponse = await login(username, password);
-    if (sessionResponse.status === "failure") {
+    if (sessionResponse.status === "error") {
       console.log("login failed");
       return;
     }
     const accountResponse = await fetchOneAccount(
       sessionResponse.data.accountId
     );
-    if (accountResponse.status === "failure") {
+    if (accountResponse.status === "error") {
       console.log("login failed");
       return;
     }

@@ -18,7 +18,7 @@ const mapToSuccessModel = (responseData: any): Success<Session> => {
 
 const mapToFailureModel = (responseData: any): Failure => {
   return {
-    status: "failure",
+    status: "error",
     error: responseData.error,
   };
 };
@@ -37,9 +37,12 @@ export const login = async (
       body: JSON.stringify({ username: username, password: password }),
     });
     if (!response.ok) {
-      console.error("An error occurred while processing the response.");
+      console.error(
+        "An error occurred while processing the response.",
+        await response.text()
+      );
       return {
-        status: "failure",
+        status: "error",
         error: "An error occurred while processing the response.",
       };
     }
@@ -51,7 +54,7 @@ export const login = async (
     }
   } catch (error) {
     return {
-      status: "failure",
+      status: "error",
       error: "An unhandled error occurred while processing the response.",
     };
   }
