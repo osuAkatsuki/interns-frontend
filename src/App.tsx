@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import NavBar from "./components/NavBar";
+import Navbar from "./components/Navbar";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -10,12 +10,14 @@ import {
 } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
+import { SignupPage } from "./pages/SignupPage";
+import { ProfilePage } from "./pages/ProfilePage";
 import Container from "@mui/material/Container";
-import { SessionContextProvider } from "./sessions";
+import { UserContextProvider } from "./users";
 
 const AppLayout = () => (
   <>
-    <NavBar />
+    <Navbar />
     <Outlet />
   </>
 );
@@ -25,6 +27,8 @@ const router = createBrowserRouter(
     <Route element={<AppLayout />}>
       <Route path="/" element={<HomePage />} />
       <Route path="login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Route>
   )
 );
@@ -32,11 +36,11 @@ const router = createBrowserRouter(
 function App() {
   return (
     <React.StrictMode>
-      <SessionContextProvider>
+      <UserContextProvider>
         <Container>
           <RouterProvider router={router} />
         </Container>
-      </SessionContextProvider>
+      </UserContextProvider>
     </React.StrictMode>
   );
 }

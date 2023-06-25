@@ -3,11 +3,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { useSessionContext } from "../sessions";
+import { useUserContext } from "../users";
 import { Link } from "react-router-dom";
 
-export default function NavBar() {
-  const { session } = useSessionContext();
+export default function Navbar() {
+  const { user } = useUserContext();
 
   return (
     <Stack
@@ -27,11 +27,11 @@ export default function NavBar() {
       {/* Right Navbar */}
       <Stack direction="row" spacing={1}>
         {/* TODO: add search bar */}
-        {session ? (
+        {user ? (
           <>
             <Link to="/profile">
               <Button>
-                <Typography variant="h6">{session?.firstName}</Typography>
+                <Typography variant="h6">{user?.account.firstName}</Typography>
               </Button>
             </Link>
           </>

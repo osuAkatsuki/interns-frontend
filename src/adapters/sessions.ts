@@ -1,29 +1,19 @@
 import { type Session } from "../interfaces/sessions";
 import type { Success, Failure } from "../interfaces/api";
 
+// TODO: implement retry logic
+
 export const login = async (
-  username: string,
+  phoneNumber: string,
   password: string
 ): Promise<Success<Session> | Failure> => {
-  // TODO: real api call with fetch()
-  if (username === "cmyui" && password === "yes") {
-    return {
-      status: "success",
-      data: {
-        sessionId: "7a3ddd79-d964-42e6-999f-22034a84046a",
-        firstName: "Josh",
-        lastName: "Smith",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        expiresAt: new Date(),
-      },
-      meta: {},
-    };
-  } else {
-    return {
-      status: "failure",
-      error: "Invalid username or password",
-      meta: {},
-    };
-  }
+  const response = await fetch("http://localhost:10000/v1/sessions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "basic-frontend/v0.0.1",
+    },
+    body: JSON.stringify({ phone_number: phoneNumber, password: password }),
+  });
+  return await response.json();
 };

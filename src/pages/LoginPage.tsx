@@ -3,19 +3,34 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useSessionContext } from "../sessions";
+import { useUserContext } from "../users";
 import { login } from "../adapters/sessions";
+import { fetchOneAccount } from "../adapters/accounts";
 
 export const LoginPage = () => {
-  const { session, setSession } = useSessionContext();
+  const { user, setUser } = useUserContext();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const handleLogin = async () => {
-    const loginResponse = await login(username, password);
-    if (loginResponse.status === "success") {
-      console.log("login success", session);
-      setSession(loginResponse.data);
+    const sessionResponse = await login(username, password);
+    if (sessionResponse.status === "failure") {
+      console.log("login failed");
+      return;
+    }
+    const accountResponse = await fetchOneAccount(
+      sessionResponse.data.accountId
+    );
+    if (accountResponse.status === "failure") {
+      console.log("login failed");
+      return;
+    }
+    if (sessionResponse.status === "success") {
+      console.log("login success");
+      setUser({
+        session: sessionResponse.data,
+        account: accountResponse.data,
+      });
     } else {
       console.log("login failed");
     }
@@ -44,9 +59,7 @@ export const LoginPage = () => {
       <Button variant="outlined" onClick={handleLogin}>
         <Typography>Submit login</Typography>
       </Button>
-      {session !== null && (
-        <Typography>Logged in as {session?.sessionId}</Typography>
-      )}
+      {user && <Typography>Logged in as {user?.session.sessionId}</Typography>}
     </Stack>
   );
 };
