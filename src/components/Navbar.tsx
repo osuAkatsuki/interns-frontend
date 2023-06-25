@@ -72,30 +72,28 @@ export default function Navbar() {
                 </IconButton>
               </Link>
 
-              <Link to={`/profile/${user.account.accountId}`}>
-                <Tooltip title="Account settings">
-                  <IconButton
-                    onClick={handleAccountSettingsClick}
-                    aria-controls={
-                      accountSettingsOpen ? "account-menu" : undefined
-                    }
-                    aria-haspopup="true"
-                    aria-expanded={accountSettingsOpen ? "true" : undefined}
-                  >
-                    {/* TODO: is const 24x24 really a good idea? breakpoints? */}
-                    {/* TODO: store avatarUrl on a per-user basis; ideally w/ breakpoints */}
-                    <Avatar
-                      sx={{ width: 24, height: 24 }}
-                      src={"https://a.akatsuki.gg/1001"}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Button onClick={handleAccountSettingsClick}>
-                  <Typography variant="subtitle1">
-                    {user.account.firstName}
-                  </Typography>
-                </Button>
-              </Link>
+              <Tooltip title="Account settings">
+                <IconButton
+                  onClick={handleAccountSettingsClick}
+                  aria-controls={
+                    accountSettingsOpen ? "account-menu" : undefined
+                  }
+                  aria-haspopup="true"
+                  aria-expanded={accountSettingsOpen ? "true" : undefined}
+                >
+                  {/* TODO: is const 24x24 really a good idea? breakpoints? */}
+                  {/* TODO: store avatarUrl on a per-user basis; ideally w/ breakpoints */}
+                  <Avatar
+                    sx={{ width: 24, height: 24 }}
+                    src={"https://a.akatsuki.gg/1001"}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Button onClick={handleAccountSettingsClick}>
+                <Typography variant="subtitle1">
+                  {user.account.firstName}
+                </Typography>
+              </Button>
             </>
           ) : (
             <>
@@ -113,61 +111,65 @@ export default function Navbar() {
           )}
         </Stack>
       </Stack>
-      <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={accountSettingsOpen}
-        onClose={handleAccountSettingsClose}
-        onClick={handleAccountSettingsClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
+      {user && (
+        <Menu
+          anchorEl={anchorEl}
+          id="account-menu"
+          open={accountSettingsOpen}
+          onClose={handleAccountSettingsClose}
+          onClick={handleAccountSettingsClose}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: "visible",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              mt: 1.5,
+              "& .MuiAvatar-root": {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              "&:before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
+                zIndex: 0,
+              },
             },
-            "&:before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem onClick={handleAccountSettingsClose}>
-          <Avatar />
-          Profile
-        </MenuItem>
-        <Divider />
-          <Link to="/settings">
-        <MenuItem onClick={handleAccountSettingsClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
+          }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <Link to={`/profile/${user.account.accountId}`}>
+            <MenuItem onClick={handleAccountSettingsClose}>
+              <Avatar />
+              Profile
+            </MenuItem>
           </Link>
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
+          <Divider />
+          <Link to="/settings">
+            <MenuItem onClick={handleAccountSettingsClose}>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+          </Link>
+          <MenuItem onClick={handleLogout}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </Menu>
+      )}
     </>
   );
 }
