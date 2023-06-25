@@ -68,7 +68,7 @@ export default function Navbar() {
               <Link to="/support">
                 {/* TODO: heart emoji */}
                 <IconButton aria-label="support">
-                  <FavoriteOutlined sx={{ color: "#db2828", mt: "2px" }} />
+                  <FavoriteOutlined sx={{ color: "#db2828" }} />
                 </IconButton>
               </Link>
 
@@ -90,7 +90,7 @@ export default function Navbar() {
                     />
                   </IconButton>
                 </Tooltip>
-                <Button>
+                <Button onClick={handleAccountSettingsClick}>
                   <Typography variant="subtitle1">
                     {user.account.firstName}
                   </Typography>
