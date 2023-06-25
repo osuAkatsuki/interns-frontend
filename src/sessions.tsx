@@ -3,8 +3,7 @@ import type { Session } from "./interfaces/sessions";
 
 export type SessionContextType = {
   session: Session | null;
-  setSession: React.Dispatch<React.SetStateAction<Session | null>>;
-  // setSession: (session: Session | null) => void;
+  setSession: (session: Session | null) => void;
 };
 
 export const SessionContext = React.createContext<
