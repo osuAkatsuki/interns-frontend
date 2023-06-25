@@ -8,8 +8,8 @@ interface User {
 }
 
 export type UserContextType = {
-  user: User | undefined;
-  setUser: (session: User | undefined) => void;
+  user: User | null;
+  setUser: (session: User | null) => void;
 };
 
 export const UserContext = React.createContext<UserContextType | undefined>(
@@ -30,31 +30,41 @@ interface Props {
 
 // TODO: store user data in cookies as opposed to local storage
 
+export const setUserInLocalStorage = (user: User) => {
+  localStorage.setItem("user", JSON.stringify(user));
+};
+
+export const getUserFromLocalStorage = () => {
+  const cached = localStorage.getItem("user");
+  if (cached) {
+    const parsed = JSON.parse(cached) as User;
+    if (new Date() >= parsed.session.expiresAt) {
+      // value in local storage has expired
+      removeUserFromLocalStorage();
+      return null;
+    }
+    return parsed;
+  }
+  return null;
+};
+
+export const removeUserFromLocalStorage = () => {
+  localStorage.removeItem("user");
+};
+
 export const UserContextProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = React.useState<User | undefined>(
-    (() => {
-      const cached = localStorage.getItem("user");
-      if (cached) {
-        const parsed = JSON.parse(cached) as User;
-        if (new Date() >= parsed.session.expiresAt) {
-          // value in local storage has expired
-          localStorage.removeItem("user");
-          return;
-        }
-        return parsed;
-      }
-      return undefined;
-    })()
+  const [user, setUser] = React.useState<User | null>(
+    getUserFromLocalStorage()
   );
   return (
     <UserContext.Provider
       value={{
         user,
-        setUser: (value: React.SetStateAction<User | undefined>) => {
+        setUser: (value: React.SetStateAction<User | null>) => {
           if (value) {
-            localStorage.setItem("user", JSON.stringify(value));
+            setUserInLocalStorage(value as User);
           } else {
-            localStorage.removeItem("user");
+            removeUserFromLocalStorage();
           }
           setUser(value);
         },

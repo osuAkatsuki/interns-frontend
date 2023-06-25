@@ -59,3 +59,41 @@ export const login = async (
     };
   }
 };
+
+export const logout = async (
+  sessionId: string
+): Promise<Success<Session> | Failure> => {
+  try {
+    const response = await fetch(
+      `http://localhost:10000/v1/sessions/${sessionId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "basic-frontend/v0.0.1",
+        },
+      }
+    );
+    if (!response.ok) {
+      console.error(
+        "An error occurred while processing the response.",
+        await response.text()
+      );
+      return {
+        status: "error",
+        error: "An error occurred while processing the response.",
+      };
+    }
+    const responseData = await response.json();
+    if (responseData.status === "success") {
+      return mapToSuccessModel(responseData);
+    } else {
+      return mapToFailureModel(responseData);
+    }
+  } catch (error) {
+    return {
+      status: "error",
+      error: "An unhandled error occurred while processing the response.",
+    };
+  }
+};
