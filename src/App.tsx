@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import NavBar from "./components/NavBar";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import Container from "@mui/material/Container";
+import { SessionContextProvider } from "./sessions";
+
+const router = createBrowserRouter([
+  { path: "/", element: <HomePage /> },
+  { path: "/login", element: <LoginPage /> },
+]);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <NavBar />
+      <RouterProvider router={router} />
+    </Container>
   );
 }
 
-export default App;
+// TODO: custom MUI theme
+
+function AppContainer() {
+  return (
+    <React.StrictMode>
+      <SessionContextProvider>
+        <App />
+      </SessionContextProvider>
+    </React.StrictMode>
+  );
+}
+export default AppContainer;
