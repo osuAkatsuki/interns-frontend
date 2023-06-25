@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { createAccount } from "../adapters/accounts";
 import { login } from "../adapters/sessions";
 import { useUserContext } from "../users";
+import { Alert } from "@mui/material";
 
 export const SignupPage = () => {
   const { user, setUser } = useUserContext();
@@ -14,7 +15,10 @@ export const SignupPage = () => {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
 
+  const [signupError, setSignupError] = React.useState("");
+
   const handleSignup = async () => {
+    // sign up
     const accountResponse = await createAccount(
       username,
       password,
@@ -22,25 +26,27 @@ export const SignupPage = () => {
       lastName
     );
     if (accountResponse.status === "error") {
-      console.log("signup failed");
+      setSignupError(`${accountResponse.message} (${accountResponse.error})`);
+      console.error("signup failed", accountResponse);
       return;
     }
+
     // upon signup, we automatically log the user in
     const account = accountResponse.data;
     const sessionResponse = await login(username, password);
     if (sessionResponse.status === "error") {
-      console.log("login failed");
+      setSignupError(`${sessionResponse.message} (${sessionResponse.error})`);
+      console.error("login failed", sessionResponse);
       return;
     }
-    if (sessionResponse.status === "success") {
-      console.log("login success");
-      setUser({
-        session: sessionResponse.data,
-        account: account,
-      });
-    } else {
-      console.log("login failed");
-    }
+
+    // handle success
+    setSignupError("");
+    console.log("login success");
+    setUser({
+      session: sessionResponse.data,
+      account: account,
+    });
   };
 
   return (
@@ -54,6 +60,7 @@ export const SignupPage = () => {
       spacing={2}
     >
       <Typography>Sign up for a new account</Typography>
+      {signupError && <Alert severity="error">{signupError}</Alert>}
       <TextField
         label="Username"
         onInput={(e) => setUsername((e.target as HTMLTextAreaElement).value)}

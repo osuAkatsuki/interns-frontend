@@ -19,6 +19,7 @@ const mapToSuccessModel = (responseData: any): Success<Session> => {
 const mapToFailureModel = (responseData: any): Failure => {
   return {
     status: "error",
+    message: responseData.message,
     error: responseData.error,
   };
 };
@@ -36,17 +37,18 @@ export const login = async (
       },
       body: JSON.stringify({ username: username, password: password }),
     });
+    const responseData = await response.json();
     if (!response.ok) {
       console.error(
         "An error occurred while processing the response.",
-        await response.text()
+        responseData
       );
       return {
         status: "error",
-        error: "An error occurred while processing the response.",
+        message: (responseData as Failure).message,
+        error: (responseData as Failure).error,
       };
     }
-    const responseData = await response.json();
     if (responseData.status === "success") {
       return mapToSuccessModel(responseData);
     } else {
@@ -55,6 +57,7 @@ export const login = async (
   } catch (error) {
     return {
       status: "error",
+      message: "internal_server_error",
       error: "An unhandled error occurred while processing the response.",
     };
   }
@@ -74,6 +77,7 @@ export const logout = async (
         },
       }
     );
+    const responseData = await response.json();
     if (!response.ok) {
       console.error(
         "An error occurred while processing the response.",
@@ -81,10 +85,10 @@ export const logout = async (
       );
       return {
         status: "error",
-        error: "An error occurred while processing the response.",
+        error: (responseData as Failure).error,
+        message: (responseData as Failure).message,
       };
     }
-    const responseData = await response.json();
     if (responseData.status === "success") {
       return mapToSuccessModel(responseData);
     } else {
@@ -93,7 +97,8 @@ export const logout = async (
   } catch (error) {
     return {
       status: "error",
-      error: "An unhandled error occurred while processing the response.",
+      error: "internal_server_error",
+      message: "An unhandled error occurred while processing the response.",
     };
   }
 };

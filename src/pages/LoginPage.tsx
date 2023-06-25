@@ -6,34 +6,41 @@ import Button from "@mui/material/Button";
 import { useUserContext } from "../users";
 import { login } from "../adapters/sessions";
 import { fetchOneAccount } from "../adapters/accounts";
+import { Alert } from "@mui/material";
 
 export const LoginPage = () => {
   const { user, setUser } = useUserContext();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
+  const [loginError, setLoginError] = React.useState("");
+
   const handleLogin = async () => {
+    // login
     const sessionResponse = await login(username, password);
     if (sessionResponse.status === "error") {
-      console.log("login failed");
+      setLoginError(`${sessionResponse.message} (${sessionResponse.error})`);
+      console.error("login failed", sessionResponse);
       return;
     }
+
+    // fetch account data
     const accountResponse = await fetchOneAccount(
       sessionResponse.data.accountId
     );
     if (accountResponse.status === "error") {
-      console.log("login failed");
+      setLoginError(`${accountResponse.message} (${accountResponse.error})`);
+      console.error("login failed", accountResponse);
       return;
     }
-    if (sessionResponse.status === "success") {
-      console.log("login success");
-      setUser({
-        session: sessionResponse.data,
-        account: accountResponse.data,
-      });
-    } else {
-      console.log("login failed");
-    }
+
+    // handle success
+    setLoginError("");
+    console.log("login success");
+    setUser({
+      session: sessionResponse.data,
+      account: accountResponse.data,
+    });
   };
 
   return (
@@ -47,6 +54,7 @@ export const LoginPage = () => {
       spacing={2}
     >
       <Typography>Sign in to an existing account</Typography>
+      {loginError && <Alert severity="error">{loginError}</Alert>}
       <TextField
         label="Username"
         onInput={(e) => setUsername((e.target as HTMLTextAreaElement).value)}

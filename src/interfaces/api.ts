@@ -7,5 +7,6 @@ export interface Success<T> {
 export interface Failure {
   status: "error";
   error: string;
+  message: string;
   meta?: Record<string, any>;
 }
