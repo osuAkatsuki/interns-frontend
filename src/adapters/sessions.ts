@@ -36,6 +36,13 @@ export const login = async (
       },
       body: JSON.stringify({ username: username, password: password }),
     });
+    if (!response.ok) {
+      console.error("An error occurred while processing the response.");
+      return {
+        status: "failure",
+        error: "An error occurred while processing the response.",
+      };
+    }
     const responseData = await response.json();
     if (responseData.status === "success") {
       return mapToSuccessModel(responseData);

@@ -45,6 +45,13 @@ export const createAccount = async (
         last_name: lastName,
       }),
     });
+    if (!response.ok) {
+      console.error("An error occurred while processing the response.");
+      return {
+        status: "failure",
+        error: "An error occurred while processing the response.",
+      };
+    }
     const responseData = await response.json();
     if (responseData.status === "success") {
       return mapToSuccessModel(responseData);
@@ -62,39 +69,85 @@ export const createAccount = async (
 export const fetchOneAccount = async (
   accountId: string
 ): Promise<Success<Account> | Failure> => {
-  const response = await fetch(
-    `http://localhost:10000/v1/accounts/${accountId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "basic-frontend/v0.0.1",
-      },
+  try {
+    const response = await fetch(
+      `http://localhost:10000/v1/accounts/${accountId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "basic-frontend/v0.0.1",
+        },
+      }
+    );
+    if (!response.ok) {
+      console.error("An error occurred while processing the response.");
+      return {
+        status: "failure",
+        error: "An error occurred while processing the response.",
+      };
     }
-  );
-  const responseData = await response.json();
-  if (responseData.status === "success") {
-    return mapToSuccessModel(responseData);
-  } else {
-    return mapToFailureModel(responseData);
+    const responseData = await response.json();
+    if (responseData.status === "success") {
+      return mapToSuccessModel(responseData);
+    } else {
+      return mapToFailureModel(responseData);
+    }
+  } catch (error) {
+    return {
+      status: "failure",
+      error: "An unhandled error occurred while processing the response.",
+    };
   }
 };
 
 export const fetchManyAccounts = async (page: number, pageSize: number) => {
-  const response = await fetch(
-    `http://localhost:10000/v1/accounts?page=${page}&page_size=${pageSize}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "basic-frontend/v0.0.1",
-      },
+  try {
+    const response = await fetch(
+      `http://localhost:10000/v1/accounts?page=${page}&page_size=${pageSize}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "basic-frontend/v0.0.1",
+        },
+      }
+    );
+    if (!response.ok) {
+      console.error("An error occurred while processing the response.");
+      return {
+        status: "failure",
+        error: "An error occurred while processing the response.",
+      };
     }
-  );
-  const responseData = await response.json();
-  if (responseData.status === "success") {
-    return responseData.data;
-  } else {
-    return [];
+    const responseData = await response.json();
+    if (responseData.status === "success") {
+      return {
+        status: "success",
+        data: responseData.data.accounts.map((account: any) => {
+          return {
+            accountId: account.account_id,
+            username: account.username,
+            firstName: account.first_name,
+            lastName: account.last_name,
+            status: account.status,
+            createdAt: new Date(account.created_at),
+            updatedAt: new Date(account.updated_at),
+          };
+        }),
+        page: responseData.data.page,
+        pageSize: responseData.data.page_size,
+        total: responseData.data.total,
+      };
+    }
+    return {
+      status: "failure",
+      error: responseData.error,
+    };
+  } catch (error) {
+    return {
+      status: "failure",
+      error: "An unhandled error occurred while processing the response.",
+    };
   }
 };
