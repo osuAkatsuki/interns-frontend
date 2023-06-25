@@ -14,6 +14,7 @@ import { SignupPage } from "./pages/SignupPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { LeaderboardsPage } from "./pages/LeaderboardsPage";
 import { SupportPage } from "./pages/SupportPage";
+import { SettingsPage } from "./pages/SettingsPage";
 import Container from "@mui/material/Container";
 import { UserContextProvider } from "./users";
 
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route path="/leaderboards" element={<LeaderboardsPage />} />
       <Route path="/profile/:accountId" element={<ProfilePage />} />
       <Route path="/support" element={<SupportPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
     </Route>
   )
 );

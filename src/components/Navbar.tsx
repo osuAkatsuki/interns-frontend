@@ -153,12 +153,14 @@ export default function Navbar() {
           Profile
         </MenuItem>
         <Divider />
+          <Link to="/settings">
         <MenuItem onClick={handleAccountSettingsClose}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
         </MenuItem>
+          </Link>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
