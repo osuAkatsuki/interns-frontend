@@ -1,7 +1,10 @@
-import { Typography } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
+import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
+import { useUserContext } from "../users";
 
 export const HomePage = () => {
+  const { user } = useUserContext();
   return (
     <Stack
       direction="column"
@@ -16,6 +19,30 @@ export const HomePage = () => {
       <Typography variant="h4">
         The largest competitive osu! private server
       </Typography>
+
+      {/* TODO: is this an antipattern? */}
+      <Box sx={{ mt: 2 }}></Box>
+
+      <Stack direction="row" spacing={2}>
+        {user ? (
+          <Link to="/support">
+            <Button variant="contained" color="primary">
+              <Typography variant="h6">Support</Typography>
+            </Button>
+          </Link>
+        ) : (
+          <Link to="/signup">
+            <Button variant="contained" color="primary">
+              <Typography variant="h6">Sign Up</Typography>
+            </Button>
+          </Link>
+        )}
+        <Link to="/leaderboards">
+          <Button variant="contained" color="secondary">
+            <Typography variant="h6">Leaderboards</Typography>
+          </Button>
+        </Link>
+      </Stack>
     </Stack>
   );
 };
