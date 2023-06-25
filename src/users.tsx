@@ -8,8 +8,8 @@ interface User {
 }
 
 export type UserContextType = {
-  user: User | null;
-  setUser: (session: User | null) => void;
+  user: User | undefined;
+  setUser: (session: User | undefined) => void;
 };
 
 export const UserContext = React.createContext<UserContextType | undefined>(
@@ -29,9 +29,35 @@ interface Props {
 }
 
 export const UserContextProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = React.useState<User | null>(null);
+  const [user, setUser] = React.useState<User | undefined>(
+    (() => {
+      const cached = localStorage.getItem("user");
+      if (cached) {
+        const parsed = JSON.parse(cached) as User;
+        if (new Date() >= parsed.session.expiresAt) {
+          // value in local storage has expired
+          localStorage.removeItem("user");
+          return;
+        }
+        return parsed;
+      }
+      return undefined;
+    })()
+  );
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser: (value: React.SetStateAction<User | undefined>) => {
+          if (value) {
+            localStorage.setItem("user", JSON.stringify(value));
+          } else {
+            localStorage.removeItem("user");
+          }
+          setUser(value);
+        },
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
