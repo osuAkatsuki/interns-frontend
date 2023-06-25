@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+// TODO: look into webpack & https://webpack.js.org/api/hot-module-replacement/
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

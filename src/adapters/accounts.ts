@@ -31,24 +31,31 @@ export const createAccount = async (
   firstName: string,
   lastName: string
 ): Promise<Success<Account> | Failure> => {
-  const response = await fetch("http://localhost:10000/v1/accounts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "User-Agent": "basic-frontend/v0.0.1",
-    },
-    body: JSON.stringify({
-      phone_number: phoneNumber,
-      password: password,
-      first_name: firstName,
-      last_name: lastName,
-    }),
-  });
-  const responseData = await response.json();
-  if (responseData.status === "success") {
-    return mapToSuccessModel(responseData);
-  } else {
-    return mapToFailureModel(responseData);
+  try {
+    const response = await fetch("http://localhost:10000/v1/accounts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+      body: JSON.stringify({
+        phone_number: phoneNumber,
+        password: password,
+        first_name: firstName,
+        last_name: lastName,
+      }),
+    });
+    const responseData = await response.json();
+    if (responseData.status === "success") {
+      return mapToSuccessModel(responseData);
+    } else {
+      return mapToFailureModel(responseData);
+    }
+  } catch (error) {
+    return {
+      status: "failure",
+      error: "An unhandled error occurred while processing the response.",
+    };
   }
 };
 

@@ -33,7 +33,9 @@ const router = createBrowserRouter(
   )
 );
 
-function App() {
+// TODO: custom MUI theme provider
+
+export default function App() {
   return (
     <React.StrictMode>
       <UserContextProvider>
@@ -44,10 +46,3 @@ function App() {
     </React.StrictMode>
   );
 }
-
-// TODO: custom MUI theme
-
-function AppContainer() {
-  return <App />;
-}
-export default AppContainer;
