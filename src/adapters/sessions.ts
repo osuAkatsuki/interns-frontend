@@ -29,7 +29,8 @@ export const login = async (
   password: string
 ): Promise<Success<Session> | Failure> => {
   try {
-    const response = await fetch("http://localhost:10000/v1/sessions", {
+    const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
+    const response = await fetch(`${baseUrl}/v1/sessions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,16 +68,14 @@ export const logout = async (
   sessionId: string
 ): Promise<Success<Session> | Failure> => {
   try {
-    const response = await fetch(
-      `http://localhost:10000/v1/sessions/${sessionId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": "basic-frontend/v0.0.1",
-        },
-      }
-    );
+    const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
+    const response = await fetch(`${baseUrl}/v1/sessions/${sessionId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+    });
     const responseData = await response.json();
     if (!response.ok) {
       console.error(
