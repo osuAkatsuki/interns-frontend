@@ -74,7 +74,7 @@ export const fetchOne = async (
   }
 };
 
-export const fetchMany = async (
+export const fetchManyStats = async (
   page: number,
   pageSize: number
 ): Promise<Success<Stats[]> | Failure> => {
