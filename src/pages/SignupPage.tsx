@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -13,12 +13,12 @@ export const SignupPage = () => {
   const navigate = useNavigate();
 
   const { setUser } = useUserContext();
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
-  const [signupError, setSignupError] = React.useState("");
+  const [signupError, setSignupError] = useState("");
 
   const handleSignup = async () => {
     // sign up
