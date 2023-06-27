@@ -1,36 +1,55 @@
 import { useParams } from "react-router-dom";
-import { Typography, Paper, Divider, List } from "@mui/material";
+import { Typography, Paper, List, Skeleton } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { fetchManyScores } from "../adapters/scores";
 import { Score } from "../interfaces/scores";
+import { Stats } from "../interfaces/stats";
 import { Failure, Success } from "../interfaces/api";
+import { fetchStats } from "../adapters/stats";
 
 export const ProfilePage = () => {
-  const [data, setData] = useState<Score[] | null>(null);
+  const [scoresData, setScoresData] = useState<Score[] | null>(null);
+  const [statsData, setStatsData] = useState<Stats | null>(null);
   const [isLoading, setLoading] = useState(false); // is this a reason to sep from data!=null?
   const [error, setError] = useState("");
   const { accountId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      const allStats = await fetchManyScores({
+      const playerScores = await fetchManyScores({
         page: 1,
         pageSize: 50,
         sortBy: "performance_points",
       });
-      if (allStats.status === "error") {
+      if (playerScores.status === "error") {
         setError("Failed to fetch data from server");
         return;
       }
 
-      setData(allStats.data);
+      setScoresData(playerScores.data);
     };
 
     // run this asynchronously
     fetchData().catch(console.error);
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!accountId) return;
+
+      const playerStats = await fetchStats(parseInt(accountId), 0); // TODO: other gamemodes
+      if (playerStats.status === "error") {
+        setError("Failed to fetch data from server");
+        return;
+      }
+
+      setStatsData(playerStats.data);
+    };
+
+    // run this asynchronously
+    fetchData().catch(console.error);
+  }, [accountId]);
 
   if (!accountId) {
     return (
@@ -41,7 +60,12 @@ export const ProfilePage = () => {
       </>
     );
   }
-  const userpageContent = "Hello World!"; // TODO: dynamic
+  const userpageContent = undefined; //"Hello World!"; // TODO: dynamic
+
+  if (!statsData || !scoresData) {
+    // loading state
+    return <>loading data</>;
+  }
 
   return (
     <>
@@ -78,31 +102,109 @@ export const ProfilePage = () => {
           <Box sx={{ width: 3 / 5 }}>
             <Paper elevation={3} sx={{ height: 1 / 1 }}>
               {/* Ranking Graph */}
-              <Stack direction="column" sx={{ p: 2 }}>
-                <Typography>Gaming</Typography>
-                <Typography>Gaming</Typography>
-              </Stack>
+              <Box sx={{ p: 2, display: "flex" }}>
+                <Skeleton variant="rounded" width="100%" height="100%" />
+              </Box>
             </Paper>
           </Box>
           <Box sx={{ width: 2 / 5 }}>
             <Paper elevation={3}>
               {/* Overall Stats */}
-              <Stack direction="column" sx={{ p: 2 }}>
-                {/* TODO: this should be a table */}
-                <Typography>Total Score</Typography>
-                <Typography>Ranked Score</Typography>
-                <Typography>Performance Points</Typography>
-                <Typography>Play Count</Typography>
-                <Typography>Play Time</Typography>
-                <Typography>Accuracy</Typography>
-                <Typography>Highest Combo</Typography>
-                <Typography>Total Hits</Typography>
-                <Typography>SS Count (Hidden)</Typography>
-                <Typography>SS Count (No Hidden)</Typography>
-                <Typography>S Count (Hidden)</Typography>
-                <Typography>S Count (No Hidden)</Typography>
-                <Typography>A Count</Typography>
-              </Stack>
+              <Box sx={{ p: 2 }}>
+                <Typography variant="h6">Userpage</Typography>
+                <Stack direction="column">
+                  {/* TODO: this should be a table */}
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>Total Score</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.totalScore}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>Ranked Score</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.rankedScore}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>
+                      Performance Points
+                    </Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.performancePoints}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>Play Count</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.playCount}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>Play Time</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.playTime}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>Accuracy</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.accuracy}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>Highest Combo</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.highestCombo}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>Total Hits</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.totalHits}
+                    </Typography>
+                  </Stack>
+                  {/* TODO: Make grade counts a custom component of its own */}
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>
+                      SS Count (Hidden)
+                    </Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.xhCount}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>
+                      SS Count (No Hidden)
+                    </Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.xCount}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>
+                      S Count (Hidden)
+                    </Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.shCount}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>
+                      S Count (No Hidden)
+                    </Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.sCount}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>A Count</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {statsData.aCount}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </Box>
             </Paper>
           </Box>
         </Stack>

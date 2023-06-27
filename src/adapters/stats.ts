@@ -40,7 +40,7 @@ const deserializeFailureResponse = (responseData: any): Failure => {
   };
 };
 
-export const fetchOne = async (
+export const fetchStats = async (
   accountId: number,
   gameMode: number
 ): Promise<Success<Stats> | Failure> => {
@@ -74,11 +74,13 @@ export const fetchOne = async (
     };
   }
 };
-
-export const fetchManyStats = async (
-  page: number,
-  pageSize: number
-): Promise<Success<Stats[]> | Failure> => {
+export const fetchManyStats = async ({
+  page = 1,
+  pageSize = 50,
+}: {
+  page?: number;
+  pageSize?: number;
+} = {}): Promise<Success<Stats[]> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(
