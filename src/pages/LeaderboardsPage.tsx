@@ -29,9 +29,16 @@ export const LeaderboardsPage = () => {
   const [isLoading, setLoading] = useState(false); // is this a reason to sep from data!=null?
   const [error, setError] = useState("");
 
+  // TODO: buttons for pagination
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 50;
+
   useEffect(() => {
     const fetchData = async () => {
-      const allStats = await fetchManyStats(1, 50);
+      const allStats = await fetchManyStats({
+        page: page,
+        pageSize: PAGE_SIZE,
+      });
       if (allStats.status === "error") {
         setError("Failed to fetch data from server");
         return;
