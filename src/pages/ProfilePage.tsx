@@ -1,5 +1,16 @@
 import { useParams } from "react-router-dom";
-import { Typography, Paper, List, Skeleton } from "@mui/material";
+import {
+  Typography,
+  Paper,
+  List,
+  Skeleton,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
@@ -8,6 +19,7 @@ import { Score } from "../interfaces/scores";
 import { Stats } from "../interfaces/stats";
 import { Failure, Success } from "../interfaces/api";
 import { fetchStats } from "../adapters/stats";
+import { formatMods } from "../utils/mods";
 
 export const ProfilePage = () => {
   const [scoresData, setScoresData] = useState<Score[] | null>(null);
@@ -18,7 +30,10 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!accountId) return;
+
       const playerScores = await fetchManyScores({
+        accountId: parseInt(accountId), // TODO: need to fix backend
         page: 1,
         pageSize: 50,
         sortBy: "performance_points",
@@ -38,7 +53,10 @@ export const ProfilePage = () => {
     const fetchData = async () => {
       if (!accountId) return;
 
-      const playerStats = await fetchStats(parseInt(accountId), 0); // TODO: other gamemodes
+      const playerStats = await fetchStats(
+        parseInt(accountId), // TODO: need to fix on backend
+        0 // TODO: other gamemodes
+      );
       if (playerStats.status === "error") {
         setError("Failed to fetch data from server");
         return;
@@ -209,10 +227,73 @@ export const ProfilePage = () => {
           </Box>
         </Stack>
         <Box>
-          {/* Best Scores */}
-          <Paper elevation={3} sx={{ p: 2 }}>
-            <Typography variant="h6">Best Scores</Typography>
-            <List></List>
+          <Paper elevation={3}>
+            {/* Best Scores */}
+            <Box sx={{ p: 2 }}>
+              <Typography variant="h6">Best Scores</Typography>
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="best scores table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <Typography>Grade</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Beatmap</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Performance</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Score</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Accuracy</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Combo</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Submitted At</Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {scoresData.map((score: Score) => (
+                      <TableRow>
+                        {/* TODO: images for the grades */}
+                        <TableCell>{score.grade}</TableCell>
+                        {/* TODO: full beatmap name & diffname */}
+                        {/* TODO: clickable to go to beatmap page */}
+                        <TableCell>
+                          <Typography>
+                            {score.beatmapMd5}{" "}
+                            {score.mods ? `+${formatMods(score.mods)}` : ""}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{score.performancePoints}pp</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{score.score}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{score.accuracy}%</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{score.highestCombo}x</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>
+                            {score.createdAt.toLocaleString("en-US")}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
           </Paper>
         </Box>
         <Box>
