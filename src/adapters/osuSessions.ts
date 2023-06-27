@@ -48,16 +48,14 @@ export const fetchOneOsuSession = async (
   sessionId: string
 ): Promise<Success<OsuSession> | Failure> => {
   try {
-    const response = await fetch(
-      `http://localhost:10000/v1/sessions/${sessionId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": "basic-frontend/v0.0.1",
-        },
-      }
-    );
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
+    const response = await fetch(`${baseUrl}/v1/sessions/${sessionId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+    });
     const responseData = await response.json();
     if (!response.ok) {
       console.error(
@@ -86,8 +84,9 @@ export const fetchOneOsuSession = async (
 
 export const fetchManyOsuSessions = async (page: number, pageSize: number) => {
   try {
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(
-      `http://localhost:10000/v1/sessions?page=${page}&page_size=${pageSize}`,
+      `${baseUrl}/v1/sessions?page=${page}&page_size=${pageSize}`,
       {
         method: "GET",
         headers: {

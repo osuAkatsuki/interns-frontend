@@ -45,8 +45,9 @@ export const fetchOne = async (
   gameMode: number
 ): Promise<Success<Stats> | Failure> => {
   try {
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(
-      `http://localhost:10000/v1/stats/${accountId}/${gameMode}`,
+      `${baseUrl}/v1/stats/${accountId}/${gameMode}`,
       {
         method: "GET",
         headers: {
@@ -79,8 +80,9 @@ export const fetchManyStats = async (
   pageSize: number
 ): Promise<Success<Stats[]> | Failure> => {
   try {
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(
-      `http://localhost:10000/v1/stats?page=${page}&page_size=${pageSize}`,
+      `${baseUrl}/v1/stats?page=${page}&page_size=${pageSize}`,
       {
         method: "GET",
         headers: {
@@ -89,7 +91,7 @@ export const fetchManyStats = async (
         },
       }
     );
-    const responseData: Success<Stats[]> | Failure = await response.json();
+    const responseData = await response.json();
     if (!response.ok || responseData.status !== "success") {
       console.error(
         "An error occurred while processing the response.",
