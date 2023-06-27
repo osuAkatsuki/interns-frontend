@@ -9,7 +9,7 @@ interface User {
 
 export type UserContextType = {
   user: User | null;
-  setUser: (session: User | null) => void;
+  setUser: (user: User | null) => void;
 };
 
 export const UserContext = React.createContext<UserContextType | undefined>(

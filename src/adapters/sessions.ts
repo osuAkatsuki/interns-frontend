@@ -3,7 +3,7 @@ import type { Success, Failure } from "../interfaces/api";
 
 // TODO: implement retry logic
 
-const mapToSuccessModel = (responseData: any): Success<Session> => {
+const deserializeSuccessResponse = (responseData: any): Success<Session> => {
   return {
     status: "success",
     data: {
@@ -13,10 +13,15 @@ const mapToSuccessModel = (responseData: any): Success<Session> => {
       createdAt: new Date(responseData.data.created_at),
       updatedAt: new Date(responseData.data.updated_at),
     },
+    meta: {
+      page: responseData.meta.page,
+      pageSize: responseData.meta.page_size,
+      total: responseData.meta.total,
+    },
   };
 };
 
-const mapToFailureModel = (responseData: any): Failure => {
+const deserializeFailureResponse = (responseData: any): Failure => {
   return {
     status: "error",
     message: responseData.message,
@@ -38,23 +43,15 @@ export const login = async (
       },
       body: JSON.stringify({ username: username, password: password }),
     });
-    const responseData = await response.json();
-    if (!response.ok) {
+    const responseData: Success<Session> | Failure = await response.json();
+    if (!response.ok || responseData.status !== "success") {
       console.error(
         "An error occurred while processing the response.",
         responseData
       );
-      return {
-        status: "error",
-        message: (responseData as Failure).message,
-        error: (responseData as Failure).error,
-      };
+      return deserializeFailureResponse(responseData);
     }
-    if (responseData.status === "success") {
-      return mapToSuccessModel(responseData);
-    } else {
-      return mapToFailureModel(responseData);
-    }
+    return deserializeSuccessResponse(responseData);
   } catch (error) {
     return {
       status: "error",
@@ -70,29 +67,22 @@ export const logout = async (
   try {
     const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
     const response = await fetch(`${baseUrl}/v1/sessions/${sessionId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "basic-frontend/v0.0.1",
-      },
-    });
-    const responseData = await response.json();
-    if (!response.ok) {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "basic-frontend/v0.0.1",
+        },
+      }
+    );
+    const responseData: Success<Session> | Failure = await response.json();
+    if (!response.ok || responseData.status !== "success") {
       console.error(
         "An error occurred while processing the response.",
-        await response.text()
+        responseData
       );
-      return {
-        status: "error",
-        error: (responseData as Failure).error,
-        message: (responseData as Failure).message,
-      };
+      return deserializeFailureResponse(responseData);
     }
-    if (responseData.status === "success") {
-      return mapToSuccessModel(responseData);
-    } else {
-      return mapToFailureModel(responseData);
-    }
+    return deserializeSuccessResponse(responseData);
   } catch (error) {
     return {
       status: "error",
