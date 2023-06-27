@@ -5,7 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Typography } from "@mui/material";
+import { Alert, Box, Typography } from "@mui/material";
 
 import { fetchManyStats } from "../adapters/stats";
 import { useEffect, useState } from "react";
@@ -25,7 +25,6 @@ interface LeaderboardEntry {
 }
 
 export const LeaderboardsPage = () => {
-  const { user } = useUserContext();
   const [data, setData] = useState<Stats[] | null>(null);
   const [isLoading, setLoading] = useState(false); // is this a reason to sep from data!=null?
   const [error, setError] = useState("");
@@ -49,6 +48,8 @@ export const LeaderboardsPage = () => {
     <>
       {/* TODO: is this an antipattern? */}
       <Box sx={{ mt: 2 }}></Box>
+
+      {error && <Alert severity="error">{error}</Alert>}
 
       {isLoading ? (
         <>
