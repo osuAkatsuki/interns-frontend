@@ -38,7 +38,8 @@ export const createAccount = async (
   lastName: string
 ): Promise<Success<Account> | Failure> => {
   try {
-    const response = await fetch("http://localhost:10000/v1/accounts", {
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
+    const response = await fetch(`${baseUrl}/v1/accounts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,9 +74,8 @@ export const fetchOneAccount = async (
   accountId: string
 ): Promise<Success<Account> | Failure> => {
   try {
-    const response = await fetch(
-      `http://localhost:10000/v1/accounts/${accountId}`,
-      {
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
+    const response = await fetch(`${baseUrl}/v1/accounts/${accountId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -106,8 +106,10 @@ export const fetchManyAccounts = async (
   pageSize: number
 ): Promise<Success<Account[]> | Failure> => {
   try {
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(
-      `http://localhost:10000/v1/accounts?page=${page}&page_size=${pageSize}`,
+      // TODO: can we clean up the query args?
+      `${baseUrl}/v1/accounts?page=${page}&page_size=${pageSize}`,
       {
         method: "GET",
         headers: {
