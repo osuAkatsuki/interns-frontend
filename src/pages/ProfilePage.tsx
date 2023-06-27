@@ -136,7 +136,6 @@ export const ProfilePage = () => {
               <Box sx={{ p: 2 }}>
                 <Typography variant="h6">Userpage</Typography>
                 <Stack direction="column">
-                  {/* TODO: this should be a table */}
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Total Score</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
