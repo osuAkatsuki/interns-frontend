@@ -1,6 +1,9 @@
 import { type Account } from "../interfaces/accounts";
 import type { Success, Failure } from "../interfaces/api";
 
+// !! TODO: refactor users-service to be ONLY based
+// on sessions and share accounts with the osu! server
+
 // TODO: implement retry logic
 
 const deserializeSuccessResponse = (responseData: any): Success<Account> => {
@@ -38,7 +41,7 @@ export const createAccount = async (
   lastName: string
 ): Promise<Success<Account> | Failure> => {
   try {
-    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
+    const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
     const response = await fetch(`${baseUrl}/v1/accounts`, {
       method: "POST",
       headers: {
@@ -74,15 +77,14 @@ export const fetchOneAccount = async (
   accountId: string
 ): Promise<Success<Account> | Failure> => {
   try {
-    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
+    const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
     const response = await fetch(`${baseUrl}/v1/accounts/${accountId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": "basic-frontend/v0.0.1",
-        },
-      }
-    );
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+    });
     const responseData: Success<Account> | Failure = await response.json();
     if (!response.ok || responseData.status !== "success") {
       console.error(
@@ -106,7 +108,7 @@ export const fetchManyAccounts = async (
   pageSize: number
 ): Promise<Success<Account[]> | Failure> => {
   try {
-    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
+    const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
     const response = await fetch(
       // TODO: can we clean up the query args?
       `${baseUrl}/v1/accounts?page=${page}&page_size=${pageSize}`,
