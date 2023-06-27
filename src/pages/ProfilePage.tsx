@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import {
   Typography,
   Paper,
-  List,
   TableContainer,
   Table,
   TableHead,
@@ -21,34 +20,58 @@ import { fetchStats } from "../adapters/stats";
 import { formatMods } from "../utils/mods";
 
 export const ProfilePage = () => {
-  const [scoresData, setScoresData] = useState<Score[] | null>(null);
-  const [statsData, setStatsData] = useState<Stats | null>(null);
+  const [bestScores, setBestScores] = useState<Score[] | null>(null);
+  const [recentScores, setRecentScores] = useState<Score[] | null>(null);
+  const [statsData, fetchModeStats] = useState<Stats | null>(null);
   const [error, setError] = useState("");
   const { accountId } = useParams();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProfileBestScores = async () => {
       if (!accountId) return;
 
-      const playerScores = await fetchManyScores({
+      const playerBestScores = await fetchManyScores({
         accountId: parseInt(accountId), // TODO: need to fix backend
         page: 1,
         pageSize: 50,
         sortBy: "performance_points",
       });
-      if (playerScores.status === "error") {
+      if (playerBestScores.status === "error") {
         setError("Failed to fetch data from server");
         return;
       }
 
-      setScoresData(playerScores.data);
+      setBestScores(playerBestScores.data);
     };
 
     // run this asynchronously
-    fetchData().catch(console.error);
+    fetchProfileBestScores().catch(console.error);
   }, []);
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProfileRecentScores = async () => {
+      if (!accountId) return;
+
+      const playerRecentScores = await fetchManyScores({
+        accountId: parseInt(accountId), // TODO: need to fix backend
+        page: 1,
+        pageSize: 50,
+        sortBy: "created_at",
+      });
+      if (playerRecentScores.status === "error") {
+        setError("Failed to fetch data from server");
+        return;
+      }
+
+      setRecentScores(playerRecentScores.data);
+    };
+
+    // run this asynchronously
+    fetchProfileRecentScores().catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    const fetchProfileStats = async () => {
       if (!accountId) return;
 
       const playerStats = await fetchStats(
@@ -60,11 +83,11 @@ export const ProfilePage = () => {
         return;
       }
 
-      setStatsData(playerStats.data);
+      fetchModeStats(playerStats.data);
     };
 
     // run this asynchronously
-    fetchData().catch(console.error);
+    fetchProfileStats().catch(console.error);
   }, [accountId]);
 
   if (!accountId) {
@@ -78,7 +101,7 @@ export const ProfilePage = () => {
   }
   const userpageContent = undefined; //"Hello World!"; // TODO: dynamic
 
-  if (!statsData || !scoresData) {
+  if (!statsData || !bestScores || !recentScores) {
     // loading state
     return <>loading data</>;
   }
@@ -263,7 +286,7 @@ export const ProfilePage = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {scoresData.map((score: Score) => (
+                    {bestScores.map((score: Score) => (
                       <TableRow>
                         {/* TODO: images for the grades */}
                         <TableCell>{score.grade}</TableCell>
@@ -302,9 +325,72 @@ export const ProfilePage = () => {
         </Box>
         <Box>
           {/* Recent Scores */}
-          <Paper elevation={3} sx={{ p: 2 }}>
-            <Typography variant="h6">Recent Scores</Typography>
-            <List></List>
+          <Paper elevation={3}>
+            <Box sx={{ p: 2 }}>
+              <Typography variant="h6">Recent Scores</Typography>
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="recent scores table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <Typography>Grade</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Beatmap</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Performance</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Score</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Accuracy</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Combo</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography>Submitted At</Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {recentScores.map((score: Score) => (
+                      <TableRow>
+                        {/* TODO: images for the grades */}
+                        <TableCell>{score.grade}</TableCell>
+                        {/* TODO: full beatmap name & diffname */}
+                        {/* TODO: clickable to go to beatmap page */}
+                        <TableCell>
+                          <Typography>
+                            {score.beatmapMd5}{" "}
+                            {score.mods ? `+${formatMods(score.mods)}` : ""}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{score.performancePoints}pp</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{score.score}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{score.accuracy}%</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{score.highestCombo}x</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>
+                            {score.createdAt.toLocaleString("en-US")}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
           </Paper>
         </Box>
       </Stack>

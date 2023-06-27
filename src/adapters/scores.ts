@@ -107,7 +107,8 @@ export const fetchManyScores = async ({
     | "performance_points"
     | "accuracy"
     | "highest_combo"
-    | "grade";
+    | "grade"
+    | "created_at";
   page?: number;
   pageSize?: number;
 }): Promise<Success<Score[]> | Failure> => {
