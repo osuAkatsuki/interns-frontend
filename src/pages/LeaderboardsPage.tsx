@@ -31,7 +31,7 @@ export const LeaderboardsPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const allStats = await fetchManyStats(1, 50);
+      const allStats = await fetchManyStats({ page: 1, pageSize: 50 });
       if (allStats.status === "error") {
         setError("Failed to fetch data from server");
         return;
