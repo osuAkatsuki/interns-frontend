@@ -3,13 +3,13 @@ import {
   Typography,
   Paper,
   List,
-  Skeleton,
   TableContainer,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
+  Alert,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
@@ -17,14 +17,12 @@ import { useEffect, useState } from "react";
 import { fetchManyScores } from "../adapters/scores";
 import { Score } from "../interfaces/scores";
 import { Stats } from "../interfaces/stats";
-import { Failure, Success } from "../interfaces/api";
 import { fetchStats } from "../adapters/stats";
 import { formatMods } from "../utils/mods";
 
 export const ProfilePage = () => {
   const [scoresData, setScoresData] = useState<Score[] | null>(null);
   const [statsData, setStatsData] = useState<Stats | null>(null);
-  const [isLoading, setLoading] = useState(false); // is this a reason to sep from data!=null?
   const [error, setError] = useState("");
   const { accountId } = useParams();
 
@@ -84,6 +82,13 @@ export const ProfilePage = () => {
     // loading state
     return <>loading data</>;
   }
+  if (error) {
+    return (
+      <Alert severity="error">
+        Something went wrong while loading the page
+      </Alert>
+    );
+  }
 
   return (
     <>
@@ -120,8 +125,8 @@ export const ProfilePage = () => {
           <Box sx={{ width: 3 / 5 }}>
             <Paper elevation={3} sx={{ height: 1 / 1 }}>
               {/* Ranking Graph */}
-              <Box sx={{ p: 2, display: "flex" }}>
-                <Skeleton variant="rounded" width="100%" height="100%" />
+              <Box sx={{ p: 2 }}>
+                <Typography>TODO: Ranking graph here</Typography>
               </Box>
             </Paper>
           </Box>
