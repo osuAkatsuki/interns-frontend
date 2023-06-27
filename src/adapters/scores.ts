@@ -30,8 +30,8 @@ const deserializeSuccessResponse = (responseData: any): Success<Score> => {
       gameMode: responseData.data.game_mode,
       country: responseData.data.country,
       timeElapsed: responseData.data.time_elapsed,
-      createdAt: responseData.data.created_at,
-      updatedAt: responseData.data.updated_at,
+      createdAt: new Date(responseData.data.created_at),
+      updatedAt: new Date(responseData.data.updated_at),
     },
     meta: {
       page: responseData.meta.page,
@@ -107,7 +107,8 @@ export const fetchManyScores = async ({
     | "performance_points"
     | "accuracy"
     | "highest_combo"
-    | "grade";
+    | "grade"
+    | "created_at";
   page?: number;
   pageSize?: number;
 }): Promise<Success<Score[]> | Failure> => {
@@ -164,8 +165,8 @@ export const fetchManyScores = async ({
         gameMode: score.game_mode,
         country: score.country,
         timeElapsed: score.time_elapsed,
-        createdAt: score.created_at,
-        updatedAt: score.updated_at,
+        createdAt: new Date(score.created_at),
+        updatedAt: new Date(score.updated_at),
       })),
       meta: {
         page: responseData.meta.page,
