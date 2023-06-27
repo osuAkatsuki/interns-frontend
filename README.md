@@ -1,4 +1,4 @@
-experimental osu! server frontend written with some interns of mine :)
+this time i am the intern
 
 sister (backend) project: https://github.com/osuAkatsuki/interns-backend
 
