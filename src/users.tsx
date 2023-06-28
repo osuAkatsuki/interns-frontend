@@ -12,9 +12,7 @@ export type UserContextType = {
   setUser: (user: User | null) => void;
 };
 
-export const UserContext = React.createContext<UserContextType | undefined>(
-  undefined
-);
+export const UserContext = React.createContext<UserContextType | undefined>(undefined);
 
 export const useUserContext = () => {
   const userContext = React.useContext(UserContext);
@@ -53,9 +51,7 @@ export const removeUserFromLocalStorage = () => {
 };
 
 export const UserContextProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = React.useState<User | null>(
-    getUserFromLocalStorage()
-  );
+  const [user, setUser] = React.useState<User | null>(getUserFromLocalStorage());
   return (
     <UserContext.Provider
       value={{

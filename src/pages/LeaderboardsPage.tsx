@@ -103,9 +103,7 @@ export const LeaderboardsPage = () => {
                           boxShadow: 2,
                         }}
                         alt="flag-image"
-                        src={`https://flagcdn.com/${
-                          /*row.country*/ "ca".toLowerCase()
-                        }.svg`}
+                        src={`https://flagcdn.com/${/*row.country*/ "ca".toLowerCase()}.svg`}
                       />
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -118,9 +116,7 @@ export const LeaderboardsPage = () => {
                       {EN_US_NUMBER_FORMAT.format(row.rankedScore)}
                     </TableCell>
                     <TableCell align="right">{row.accuracy}%</TableCell>
-                    <TableCell align="right">
-                      {EN_US_NUMBER_FORMAT.format(row.playCount)}
-                    </TableCell>
+                    <TableCell align="right">{EN_US_NUMBER_FORMAT.format(row.playCount)}</TableCell>
                     {/* <TableCell align="right">Lv. {row.level}</TableCell> */}
                   </TableRow>
                 ))}

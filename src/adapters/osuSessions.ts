@@ -17,8 +17,7 @@ const mapToSuccessModel = (responseData: any): Success<OsuSession> => {
         beatmapMd5: responseData.data.presence.beatmap_md5,
         beatmapId: responseData.data.presence.beatmap_id,
         mods: responseData.data.presence.mods,
-        spectatorHostSessionId:
-          responseData.data.presence.spectator_host_session_id,
+        spectatorHostSessionId: responseData.data.presence.spectator_host_session_id,
         awayMessage: responseData.data.presence.away_message,
         multiplayerMatchId: responseData.data.presence.multiplayer_match_id,
         lastNpBeatmapId: responseData.data.presence.last_np_beatmap_id,
@@ -58,10 +57,7 @@ export const fetchOneOsuSession = async (
     });
     const responseData = await response.json();
     if (!response.ok) {
-      console.error(
-        "An error occurred while processing the response.",
-        responseData
-      );
+      console.error("An error occurred while processing the response.", responseData);
       return {
         status: "error",
         error: (responseData as Failure).error,
@@ -85,22 +81,16 @@ export const fetchOneOsuSession = async (
 export const fetchManyOsuSessions = async (page: number, pageSize: number) => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
-    const response = await fetch(
-      `${baseUrl}/v1/sessions?page=${page}&page_size=${pageSize}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": "basic-frontend/v0.0.1",
-        },
-      }
-    );
+    const response = await fetch(`${baseUrl}/v1/sessions?page=${page}&page_size=${pageSize}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+    });
     const responseData = await response.json();
     if (!response.ok) {
-      console.error(
-        "An error occurred while processing the response.",
-        responseData
-      );
+      console.error("An error occurred while processing the response.", responseData);
       return {
         status: "error",
         error: (responseData as Failure).error,
@@ -124,8 +114,7 @@ export const fetchManyOsuSessions = async (page: number, pageSize: number) => {
               beatmapMd5: osuSession.presence.beatmap_md5,
               beatmapId: osuSession.presence.beatmap_id,
               mods: osuSession.presence.mods,
-              spectatorHostSessionId:
-                osuSession.presence.spectator_host_session_id,
+              spectatorHostSessionId: osuSession.presence.spectator_host_session_id,
               awayMessage: osuSession.presence.away_message,
               multiplayerMatchId: osuSession.presence.multiplayer_match_id,
               lastNpBeatmapId: osuSession.presence.last_np_beatmap_id,

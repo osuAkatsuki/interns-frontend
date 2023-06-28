@@ -46,22 +46,16 @@ export const fetchStats = async (
 ): Promise<Success<Stats> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
-    const response = await fetch(
-      `${baseUrl}/v1/stats/${accountId}/${gameMode}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "User-Agent": "basic-frontend/v0.0.1",
-        },
-      }
-    );
+    const response = await fetch(`${baseUrl}/v1/stats/${accountId}/${gameMode}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+    });
     const responseData: Success<Stats> | Failure = await response.json();
     if (!response.ok || responseData.status !== "success") {
-      console.error(
-        "An error occurred while processing the response.",
-        responseData
-      );
+      console.error("An error occurred while processing the response.", responseData);
       return deserializeFailureResponse(responseData);
     }
     return deserializeSuccessResponse(responseData);
@@ -83,22 +77,16 @@ export const fetchManyStats = async ({
 } = {}): Promise<Success<Stats[]> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
-    const response = await fetch(
-      `${baseUrl}/v1/stats?page=${page}&page_size=${pageSize}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "User-Agent": "basic-frontend/v0.0.1",
-        },
-      }
-    );
+    const response = await fetch(`${baseUrl}/v1/stats?page=${page}&page_size=${pageSize}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+    });
     const responseData = await response.json();
     if (!response.ok || responseData.status !== "success") {
-      console.error(
-        "An error occurred while processing the response.",
-        responseData
-      );
+      console.error("An error occurred while processing the response.", responseData);
       return deserializeFailureResponse(responseData);
     }
     return {

@@ -28,9 +28,7 @@ export const LoginPage = () => {
     }
 
     // fetch account data
-    const accountResponse = await fetchOneAccount(
-      sessionResponse.data.accountId
-    );
+    const accountResponse = await fetchOneAccount(sessionResponse.data.accountId);
     if (accountResponse.status === "error") {
       setLoginError(`${accountResponse.message} (${accountResponse.error})`);
       console.error("login failed", accountResponse);

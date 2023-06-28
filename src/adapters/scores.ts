@@ -49,9 +49,7 @@ const deserializeFailureResponse = (responseData: any): Failure => {
   };
 };
 
-export const fetchOne = async (
-  scoreId: number
-): Promise<Success<Score> | Failure> => {
+export const fetchOne = async (scoreId: number): Promise<Success<Score> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(`${baseUrl}/v1/scores/${scoreId}`, {
@@ -102,13 +100,7 @@ export const fetchManyScores = async ({
   mods?: number;
   submissionStatuses?: number[];
   friends?: number[];
-  sortBy:
-    | "score"
-    | "performance_points"
-    | "accuracy"
-    | "highest_combo"
-    | "grade"
-    | "created_at";
+  sortBy: "score" | "performance_points" | "accuracy" | "highest_combo" | "grade" | "created_at";
   page?: number;
   pageSize?: number;
 }): Promise<Success<Score[]> | Failure> => {
@@ -137,9 +129,7 @@ export const fetchManyScores = async ({
     });
     const responseData = await response.json();
     if (!response.ok || responseData.status !== "success") {
-      console.error(
-        `Error fetching scores: ${responseData.error} - ${responseData.message}`
-      );
+      console.error(`Error fetching scores: ${responseData.error} - ${responseData.message}`);
       return deserializeFailureResponse(responseData);
     }
     return {
