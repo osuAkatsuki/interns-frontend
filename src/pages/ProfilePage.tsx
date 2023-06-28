@@ -93,9 +93,7 @@ export const ProfilePage = () => {
   if (!accountId) {
     return (
       <>
-        <Typography variant="h2">
-          Must provide an account id in the path.
-        </Typography>
+        <Typography variant="h2">Must provide an account id in the path.</Typography>
       </>
     );
   }
@@ -106,11 +104,7 @@ export const ProfilePage = () => {
     return <>loading data</>;
   }
   if (error) {
-    return (
-      <Alert severity="error">
-        Something went wrong while loading the page
-      </Alert>
-    );
+    return <Alert severity="error">Something went wrong while loading the page</Alert>;
   }
 
   return (
@@ -140,11 +134,7 @@ export const ProfilePage = () => {
             </Paper>
           </Box>
         )}
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{ justifyContent: "space-evenly" }}
-        >
+        <Stack direction="row" spacing={2} sx={{ justifyContent: "space-evenly" }}>
           <Box sx={{ width: 3 / 5 }}>
             <Paper elevation={3} sx={{ height: 1 / 1 }}>
               {/* Ranking Graph */}
@@ -172,9 +162,7 @@ export const ProfilePage = () => {
                     </Typography>
                   </Stack>
                   <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>
-                      Performance Points
-                    </Typography>
+                    <Typography sx={{ width: 1 / 2 }}>Performance Points</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
                       {statsData.performancePoints}
                     </Typography>
@@ -211,33 +199,25 @@ export const ProfilePage = () => {
                   </Stack>
                   {/* TODO: Make grade counts a custom component of its own */}
                   <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>
-                      SS Count (Hidden)
-                    </Typography>
+                    <Typography sx={{ width: 1 / 2 }}>SS Count (Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
                       {statsData.xhCount}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>
-                      SS Count (No Hidden)
-                    </Typography>
+                    <Typography sx={{ width: 1 / 2 }}>SS Count (No Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
                       {statsData.xCount}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>
-                      S Count (Hidden)
-                    </Typography>
+                    <Typography sx={{ width: 1 / 2 }}>S Count (Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
                       {statsData.shCount}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>
-                      S Count (No Hidden)
-                    </Typography>
+                    <Typography sx={{ width: 1 / 2 }}>S Count (No Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
                       {statsData.sCount}
                     </Typography>
@@ -294,8 +274,7 @@ export const ProfilePage = () => {
                         {/* TODO: clickable to go to beatmap page */}
                         <TableCell>
                           <Typography>
-                            {score.beatmapMd5}{" "}
-                            {score.mods ? `+${formatMods(score.mods)}` : ""}
+                            {score.beatmapMd5} {score.mods ? `+${formatMods(score.mods)}` : ""}
                           </Typography>
                         </TableCell>
                         <TableCell>
@@ -311,9 +290,7 @@ export const ProfilePage = () => {
                           <Typography>{score.highestCombo}x</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>
-                            {score.createdAt.toLocaleString("en-US")}
-                          </Typography>
+                          <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -364,8 +341,7 @@ export const ProfilePage = () => {
                         {/* TODO: clickable to go to beatmap page */}
                         <TableCell>
                           <Typography>
-                            {score.beatmapMd5}{" "}
-                            {score.mods ? `+${formatMods(score.mods)}` : ""}
+                            {score.beatmapMd5} {score.mods ? `+${formatMods(score.mods)}` : ""}
                           </Typography>
                         </TableCell>
                         <TableCell>
@@ -381,9 +357,7 @@ export const ProfilePage = () => {
                           <Typography>{score.highestCombo}x</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>
-                            {score.createdAt.toLocaleString("en-US")}
-                          </Typography>
+                          <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
                         </TableCell>
                       </TableRow>
                     ))}

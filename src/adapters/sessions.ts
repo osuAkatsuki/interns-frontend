@@ -45,10 +45,7 @@ export const login = async (
     });
     const responseData: Success<Session> | Failure = await response.json();
     if (!response.ok || responseData.status !== "success") {
-      console.error(
-        "An error occurred while processing the response.",
-        responseData
-      );
+      console.error("An error occurred while processing the response.", responseData);
       return deserializeFailureResponse(responseData);
     }
     return deserializeSuccessResponse(responseData);
@@ -61,25 +58,19 @@ export const login = async (
   }
 };
 
-export const logout = async (
-  sessionId: string
-): Promise<Success<Session> | Failure> => {
+export const logout = async (sessionId: string): Promise<Success<Session> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
     const response = await fetch(`${baseUrl}/v1/sessions/${sessionId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": "basic-frontend/v0.0.1",
-        },
-      }
-    );
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "basic-frontend/v0.0.1",
+      },
+    });
     const responseData: Success<Session> | Failure = await response.json();
     if (!response.ok || responseData.status !== "success") {
-      console.error(
-        "An error occurred while processing the response.",
-        responseData
-      );
+      console.error("An error occurred while processing the response.", responseData);
       return deserializeFailureResponse(responseData);
     }
     return deserializeSuccessResponse(responseData);

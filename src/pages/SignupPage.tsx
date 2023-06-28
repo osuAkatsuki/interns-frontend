@@ -22,12 +22,7 @@ export const SignupPage = () => {
 
   const handleSignup = async () => {
     // sign up
-    const accountResponse = await createAccount(
-      username,
-      password,
-      firstName,
-      lastName
-    );
+    const accountResponse = await createAccount(username, password, firstName, lastName);
     if (accountResponse.status === "error") {
       setSignupError(`${accountResponse.message} (${accountResponse.error})`);
       console.error("signup failed", accountResponse);
