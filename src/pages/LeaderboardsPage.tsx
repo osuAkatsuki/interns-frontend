@@ -10,23 +10,11 @@ import { Alert, Box, Typography } from "@mui/material";
 import { fetchManyStats } from "../adapters/stats";
 import { useEffect, useState } from "react";
 import { Stats } from "../interfaces/stats";
-import { useUserContext } from "../users";
 
 const EN_US_NUMBER_FORMAT = new Intl.NumberFormat("en-us");
 
-interface LeaderboardEntry {
-  username: string;
-  country: string;
-  overall_pp: number;
-  ranked_score: number;
-  overall_acc: number;
-  playcount: number;
-  level: number;
-}
-
 export const LeaderboardsPage = () => {
   const [data, setData] = useState<Stats[] | null>(null);
-  const [isLoading, setLoading] = useState(false); // is this a reason to sep from data!=null?
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -51,7 +39,7 @@ export const LeaderboardsPage = () => {
 
       {error && <Alert severity="error">{error}</Alert>}
 
-      {isLoading ? (
+      {!data ? (
         <>
           <Typography>
             {/* TODO: https://mui.com/material-ui/react-skeleton/ */}
@@ -89,7 +77,7 @@ export const LeaderboardsPage = () => {
               </TableHead>
               <TableBody>
                 {/* TODO: username instead of account id */}
-                {data.map((row) => (
+                {data.map((row: Stats) => (
                   <TableRow
                     key={/*row.country*/ undefined}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

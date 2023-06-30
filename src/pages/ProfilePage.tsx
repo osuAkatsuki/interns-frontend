@@ -19,6 +19,13 @@ import { Stats } from "../interfaces/stats";
 import { fetchStats } from "../adapters/stats";
 import { formatMods } from "../utils/mods";
 
+const EN_US_NUMBER_FORMAT = new Intl.NumberFormat("en-us");
+
+const formatPlayTime = (value: number): string => {
+  return "TODO";
+  // TODO: `23d 12h 34m 56s` type thing
+};
+
 export const ProfilePage = () => {
   const [bestScores, setBestScores] = useState<Score[] | null>(null);
   const [recentScores, setRecentScores] = useState<Score[] | null>(null);
@@ -151,82 +158,82 @@ export const ProfilePage = () => {
                 <Typography variant="h6">Userpage</Typography>
                 <Stack direction="column">
                   <Stack direction="row">
+                    <Typography sx={{ width: 1 / 2 }}>Performance Points</Typography>
+                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+                      {EN_US_NUMBER_FORMAT.format(statsData.performancePoints)}pp
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Total Score</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.totalScore}
+                      {EN_US_NUMBER_FORMAT.format(statsData.totalScore)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Ranked Score</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.rankedScore}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Performance Points</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.performancePoints}
+                      {EN_US_NUMBER_FORMAT.format(statsData.rankedScore)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Play Count</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.playCount}
+                      {EN_US_NUMBER_FORMAT.format(statsData.playCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Play Time</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.playTime}
+                      {formatPlayTime(statsData.playTime)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Accuracy</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.accuracy}
+                      {EN_US_NUMBER_FORMAT.format(statsData.accuracy)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Highest Combo</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.highestCombo}
+                      {EN_US_NUMBER_FORMAT.format(statsData.highestCombo)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Total Hits</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.totalHits}
+                      {EN_US_NUMBER_FORMAT.format(statsData.totalHits)}
                     </Typography>
                   </Stack>
                   {/* TODO: Make grade counts a custom component of its own */}
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>SS Count (Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.xhCount}
+                      {EN_US_NUMBER_FORMAT.format(statsData.xhCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>SS Count (No Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.xCount}
+                      {EN_US_NUMBER_FORMAT.format(statsData.xCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>S Count (Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.shCount}
+                      {EN_US_NUMBER_FORMAT.format(statsData.shCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>S Count (No Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.sCount}
+                      {EN_US_NUMBER_FORMAT.format(statsData.sCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>A Count</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {statsData.aCount}
+                      {EN_US_NUMBER_FORMAT.format(statsData.aCount)}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -279,16 +286,18 @@ export const ProfilePage = () => {
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{score.performancePoints}pp</Typography>
+                          <Typography>
+                            {EN_US_NUMBER_FORMAT.format(score.performancePoints)}pp
+                          </Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{score.score}</Typography>
+                          <Typography>{EN_US_NUMBER_FORMAT.format(score.score)}</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{score.accuracy}%</Typography>
+                          <Typography>{EN_US_NUMBER_FORMAT.format(score.accuracy)}%</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{score.highestCombo}x</Typography>
+                          <Typography>{EN_US_NUMBER_FORMAT.format(score.highestCombo)}x</Typography>
                         </TableCell>
                         <TableCell>
                           <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
