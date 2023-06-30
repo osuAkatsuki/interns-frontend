@@ -2,7 +2,7 @@ import * as React from "react";
 import { Typography, Button, Stack } from "@mui/material";
 import { useUserContext, removeUserFromLocalStorage } from "../users";
 import { Link } from "react-router-dom";
-import { logout } from "../adapters/sessions";
+import { logout } from "../adapters/webSessions";
 import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import { FavoriteOutlined, Logout, Settings } from "@mui/icons-material";
 

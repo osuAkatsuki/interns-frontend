@@ -24,6 +24,7 @@ export const ProfilePage = () => {
   const [recentScores, setRecentScores] = useState<Score[] | null>(null);
   const [statsData, fetchModeStats] = useState<Stats | null>(null);
   const [error, setError] = useState("");
+
   const { accountId } = useParams();
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export const ProfilePage = () => {
 
     // run this asynchronously
     fetchProfileBestScores().catch(console.error);
-  }, []);
+  }, [accountId]);
 
   useEffect(() => {
     const fetchProfileRecentScores = async () => {
@@ -68,7 +69,7 @@ export const ProfilePage = () => {
 
     // run this asynchronously
     fetchProfileRecentScores().catch(console.error);
-  }, []);
+  }, [accountId]);
 
   useEffect(() => {
     const fetchProfileStats = async () => {

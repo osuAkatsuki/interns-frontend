@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { createAccount } from "../adapters/accounts";
-import { login } from "../adapters/sessions";
+import { login } from "../adapters/webSessions";
 import { useUserContext } from "../users";
 import { Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";

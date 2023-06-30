@@ -1,5 +1,5 @@
 import React from "react";
-import type { Session } from "./interfaces/sessions";
+import type { Session } from "./interfaces/webSessions";
 import type { Account } from "./interfaces/accounts";
 
 interface User {

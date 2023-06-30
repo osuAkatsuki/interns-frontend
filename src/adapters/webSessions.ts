@@ -1,4 +1,4 @@
-import { type Session } from "../interfaces/sessions";
+import { type Session } from "../interfaces/webSessions";
 import type { Success, Failure } from "../interfaces/api";
 
 // TODO: implement retry logic
@@ -34,8 +34,8 @@ export const login = async (
   password: string
 ): Promise<Success<Session> | Failure> => {
   try {
-    const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
-    const response = await fetch(`${baseUrl}/v1/sessions`, {
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
+    const response = await fetch(`${baseUrl}/v1/web_sessions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,8 +60,8 @@ export const login = async (
 
 export const logout = async (sessionId: string): Promise<Success<Session> | Failure> => {
   try {
-    const baseUrl = process.env.REACT_APP_WEBSITE_SESSIONS_SERVICE_API_URL;
-    const response = await fetch(`${baseUrl}/v1/sessions/${sessionId}`, {
+    const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
+    const response = await fetch(`${baseUrl}/v1/web_sessions/${sessionId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
