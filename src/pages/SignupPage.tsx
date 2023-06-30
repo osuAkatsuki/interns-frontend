@@ -62,22 +62,19 @@ export const SignupPage = () => {
     >
       <Typography>Sign up for a new account</Typography>
       {signupError && <Alert severity="error">{signupError}</Alert>}
-      <TextField
-        label="Username"
-        onInput={(e) => setUsername((e.target as HTMLTextAreaElement).value)}
-      ></TextField>
+      <TextField label="Username" onInput={(e) => setUsername((e.target as any).value)}></TextField>
       <TextField
         label="Password"
         type="password"
-        onInput={(e) => setPassword((e.target as HTMLTextAreaElement).value)}
+        onInput={(e) => setPassword((e.target as any).value)}
       ></TextField>
       <TextField
         label="First Name"
-        onInput={(e) => setFirstName((e.target as HTMLTextAreaElement).value)}
+        onInput={(e) => setFirstName((e.target as any).value)}
       ></TextField>
       <TextField
         label="Last Name"
-        onInput={(e) => setLastName((e.target as HTMLTextAreaElement).value)}
+        onInput={(e) => setLastName((e.target as any).value)}
       ></TextField>
       <Button variant="outlined" onClick={handleSignup}>
         <Typography>Submit signup</Typography>
