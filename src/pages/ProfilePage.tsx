@@ -18,10 +18,7 @@ import { Score } from "../interfaces/scores";
 import { Stats } from "../interfaces/stats";
 import { fetchStats } from "../adapters/stats";
 import { formatMods } from "../utils/mods";
-
-const formatNumber = (n: number): string => EN_US_NUMBER_FORMAT.format(Number(n.toFixed(2)));
-
-const EN_US_NUMBER_FORMAT = new Intl.NumberFormat("en-us");
+import { formatNumber } from "../utils/formatting";
 
 enum TimeUnits {
   Seconds = 1,
@@ -184,7 +181,9 @@ export const ProfilePage = () => {
             <Paper elevation={3}>
               {/* Overall Stats */}
               <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Gameplay Stats</Typography>
+                <Typography variant="h6" sx={{ pb: 1 }}>
+                  Gameplay Stats
+                </Typography>
                 <Stack direction="column">
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Performance Points</Typography>
@@ -274,7 +273,9 @@ export const ProfilePage = () => {
           <Paper elevation={3}>
             {/* Best Scores */}
             <Box sx={{ p: 2 }}>
-              <Typography variant="h6">Best Scores</Typography>
+              <Typography variant="h6" sx={{ pb: 1 }}>
+                Best Scores
+              </Typography>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="best scores table">
                   <TableHead>
@@ -341,7 +342,9 @@ export const ProfilePage = () => {
           {/* Recent Scores */}
           <Paper elevation={3}>
             <Box sx={{ p: 2 }}>
-              <Typography variant="h6">Recent Scores</Typography>
+              <Typography variant="h6" sx={{ pb: 1 }}>
+                Recent Scores
+              </Typography>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="recent scores table">
                   <TableHead>

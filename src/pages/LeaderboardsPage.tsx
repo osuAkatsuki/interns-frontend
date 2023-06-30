@@ -10,8 +10,7 @@ import { Alert, Box, Typography } from "@mui/material";
 import { fetchManyStats } from "../adapters/stats";
 import { useEffect, useState } from "react";
 import { Stats } from "../interfaces/stats";
-
-const EN_US_NUMBER_FORMAT = new Intl.NumberFormat("en-us");
+import { formatNumber } from "../utils/formatting";
 
 export const LeaderboardsPage = () => {
   const [data, setData] = useState<Stats[] | null>(null);
@@ -70,9 +69,9 @@ export const LeaderboardsPage = () => {
                   <TableCell align="right">
                     <Typography>Play Count</Typography>
                   </TableCell>
-                  <TableCell align="right">
+                  {/* <TableCell align="right">
                     <Typography>Level</Typography>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -97,14 +96,10 @@ export const LeaderboardsPage = () => {
                     <TableCell component="th" scope="row">
                       {/*row.username*/ undefined}
                     </TableCell>
-                    <TableCell align="right">
-                      {EN_US_NUMBER_FORMAT.format(row.performancePoints)}
-                    </TableCell>
-                    <TableCell align="right">
-                      {EN_US_NUMBER_FORMAT.format(row.rankedScore)}
-                    </TableCell>
-                    <TableCell align="right">{row.accuracy}%</TableCell>
-                    <TableCell align="right">{EN_US_NUMBER_FORMAT.format(row.playCount)}</TableCell>
+                    <TableCell align="right">{formatNumber(row.performancePoints)}pp</TableCell>
+                    <TableCell align="right">{formatNumber(row.rankedScore)}</TableCell>
+                    <TableCell align="right">{formatNumber(row.accuracy)}%</TableCell>
+                    <TableCell align="right">{formatNumber(row.playCount)}</TableCell>
                     {/* <TableCell align="right">Lv. {row.level}</TableCell> */}
                   </TableRow>
                 ))}
