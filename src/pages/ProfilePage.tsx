@@ -19,11 +19,40 @@ import { Stats } from "../interfaces/stats";
 import { fetchStats } from "../adapters/stats";
 import { formatMods } from "../utils/mods";
 
+const formatNumber = (n: number): string => EN_US_NUMBER_FORMAT.format(Number(n.toFixed(2)));
+
 const EN_US_NUMBER_FORMAT = new Intl.NumberFormat("en-us");
 
-const formatPlayTime = (value: number): string => {
-  return "TODO";
-  // TODO: `23d 12h 34m 56s` type thing
+enum TimeUnits {
+  Seconds = 1,
+  Minutes = 60 * Seconds,
+  Hours = 60 * Minutes,
+  Days = 24 * Hours,
+  Years = 365 * Days,
+  Centuries = 100 * Years,
+}
+
+const formatPlayTime = (seconds: number): string => {
+  const centuries = Math.floor(seconds / TimeUnits.Centuries);
+  seconds %= TimeUnits.Centuries;
+  const years = Math.floor(seconds / TimeUnits.Years);
+  seconds %= TimeUnits.Years;
+  const days = Math.floor(seconds / TimeUnits.Days);
+  seconds %= TimeUnits.Days;
+  const hours = Math.floor(seconds / TimeUnits.Hours);
+  seconds %= TimeUnits.Hours;
+  const minutes = Math.floor(seconds / TimeUnits.Minutes);
+  seconds %= TimeUnits.Minutes;
+
+  const parts = [];
+  if (centuries > 0) parts.push(`${centuries}c`);
+  if (years > 0) parts.push(`${years}y`);
+  if (days > 0) parts.push(`${days}d`);
+  if (hours > 0) parts.push(`${hours}h`);
+  if (minutes > 0) parts.push(`${minutes}m`);
+  if (seconds > 0) parts.push(`${seconds}s`);
+
+  return parts.join(" ");
 };
 
 export const ProfilePage = () => {
@@ -143,7 +172,7 @@ export const ProfilePage = () => {
           </Box>
         )}
         <Stack direction="row" spacing={2} sx={{ justifyContent: "space-evenly" }}>
-          <Box sx={{ width: 3 / 5 }}>
+          <Box sx={{ width: 2 / 3 }}>
             <Paper elevation={3} sx={{ height: 1 / 1 }}>
               {/* Ranking Graph */}
               <Box sx={{ p: 2 }}>
@@ -151,34 +180,34 @@ export const ProfilePage = () => {
               </Box>
             </Paper>
           </Box>
-          <Box sx={{ width: 2 / 5 }}>
+          <Box sx={{ width: 1 / 3 }}>
             <Paper elevation={3}>
               {/* Overall Stats */}
               <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Userpage</Typography>
+                <Typography variant="h6">Gameplay Stats</Typography>
                 <Stack direction="column">
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Performance Points</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.performancePoints)}pp
+                      {formatNumber(statsData.performancePoints)}pp
                     </Typography>
                   </Stack>
                   <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Total Score</Typography>
+                    <Typography sx={{ width: 1 / 2 }}>Overall Accuracy</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.totalScore)}
+                      {formatNumber(statsData.accuracy)}%
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Ranked Score</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.rankedScore)}
+                      {formatNumber(statsData.rankedScore)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Play Count</Typography>
+                    <Typography sx={{ width: 1 / 2 }}>Total Score</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.playCount)}
+                      {formatNumber(statsData.totalScore)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
@@ -188,52 +217,52 @@ export const ProfilePage = () => {
                     </Typography>
                   </Stack>
                   <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Accuracy</Typography>
+                    <Typography sx={{ width: 1 / 2 }}>Play Count</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.accuracy)}
+                      {formatNumber(statsData.playCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Highest Combo</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.highestCombo)}
+                      {formatNumber(statsData.highestCombo)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>Total Hits</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.totalHits)}
+                      {formatNumber(statsData.totalHits)}
                     </Typography>
                   </Stack>
                   {/* TODO: Make grade counts a custom component of its own */}
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>SS Count (Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.xhCount)}
+                      {formatNumber(statsData.xhCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>SS Count (No Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.xCount)}
+                      {formatNumber(statsData.xCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>S Count (Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.shCount)}
+                      {formatNumber(statsData.shCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>S Count (No Hidden)</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.sCount)}
+                      {formatNumber(statsData.sCount)}
                     </Typography>
                   </Stack>
                   <Stack direction="row">
                     <Typography sx={{ width: 1 / 2 }}>A Count</Typography>
                     <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {EN_US_NUMBER_FORMAT.format(statsData.aCount)}
+                      {formatNumber(statsData.aCount)}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -286,18 +315,16 @@ export const ProfilePage = () => {
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>
-                            {EN_US_NUMBER_FORMAT.format(score.performancePoints)}pp
-                          </Typography>
+                          <Typography>{formatNumber(score.performancePoints)}pp</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{EN_US_NUMBER_FORMAT.format(score.score)}</Typography>
+                          <Typography>{formatNumber(score.score)}</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{EN_US_NUMBER_FORMAT.format(score.accuracy)}%</Typography>
+                          <Typography>{formatNumber(score.accuracy)}%</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{EN_US_NUMBER_FORMAT.format(score.highestCombo)}x</Typography>
+                          <Typography>{formatNumber(score.highestCombo)}x</Typography>
                         </TableCell>
                         <TableCell>
                           <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
@@ -355,16 +382,16 @@ export const ProfilePage = () => {
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{score.performancePoints}pp</Typography>
+                          <Typography>{formatNumber(score.performancePoints)}pp</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{score.score}</Typography>
+                          <Typography>{formatNumber(score.score)}</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{score.accuracy}%</Typography>
+                          <Typography>{formatNumber(score.accuracy)}%</Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography>{score.highestCombo}x</Typography>
+                          <Typography>{formatNumber(score.highestCombo)}x</Typography>
                         </TableCell>
                         <TableCell>
                           <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
