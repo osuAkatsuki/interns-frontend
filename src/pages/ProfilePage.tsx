@@ -1,15 +1,5 @@
 import { useParams } from "react-router-dom";
-import {
-  Typography,
-  Paper,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Alert,
-} from "@mui/material";
+import { Typography, Paper, Alert } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
@@ -17,8 +7,6 @@ import { fetchManyScores } from "../adapters/scores";
 import { Score } from "../interfaces/scores";
 import { Stats } from "../interfaces/stats";
 import { fetchStats } from "../adapters/stats";
-import { formatMods } from "../utils/mods";
-import { formatNumber } from "../utils/formatting";
 import { GameplayStats } from "../components/GameplayStats";
 import { Scores } from "../components/Scores";
 import { RankingGraph } from "../components/RankingGraph";
