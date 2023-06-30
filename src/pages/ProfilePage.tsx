@@ -19,43 +19,15 @@ import { Stats } from "../interfaces/stats";
 import { fetchStats } from "../adapters/stats";
 import { formatMods } from "../utils/mods";
 import { formatNumber } from "../utils/formatting";
-
-enum TimeUnits {
-  Seconds = 1,
-  Minutes = 60 * Seconds,
-  Hours = 60 * Minutes,
-  Days = 24 * Hours,
-  Years = 365 * Days,
-  Centuries = 100 * Years,
-}
-
-const formatPlayTime = (seconds: number): string => {
-  const centuries = Math.floor(seconds / TimeUnits.Centuries);
-  seconds %= TimeUnits.Centuries;
-  const years = Math.floor(seconds / TimeUnits.Years);
-  seconds %= TimeUnits.Years;
-  const days = Math.floor(seconds / TimeUnits.Days);
-  seconds %= TimeUnits.Days;
-  const hours = Math.floor(seconds / TimeUnits.Hours);
-  seconds %= TimeUnits.Hours;
-  const minutes = Math.floor(seconds / TimeUnits.Minutes);
-  seconds %= TimeUnits.Minutes;
-
-  const parts = [];
-  if (centuries > 0) parts.push(`${centuries}c`);
-  if (years > 0) parts.push(`${years}y`);
-  if (days > 0) parts.push(`${days}d`);
-  if (hours > 0) parts.push(`${hours}h`);
-  if (minutes > 0) parts.push(`${minutes}m`);
-  if (seconds > 0) parts.push(`${seconds}s`);
-
-  return parts.join(" ");
-};
+import { GameplayStats } from "../components/GameplayStats";
+import { Scores } from "../components/Scores";
+import { RankingGraph } from "../components/RankingGraph";
 
 export const ProfilePage = () => {
   const [bestScores, setBestScores] = useState<Score[] | null>(null);
   const [recentScores, setRecentScores] = useState<Score[] | null>(null);
   const [statsData, fetchModeStats] = useState<Stats | null>(null);
+  const rankHistoryData = null; // TODO
   const [error, setError] = useState("");
 
   const { accountId } = useParams();
@@ -170,242 +142,17 @@ export const ProfilePage = () => {
         )}
         <Stack direction="row" spacing={2} sx={{ justifyContent: "space-evenly" }}>
           <Box sx={{ width: 2 / 3 }}>
-            <Paper elevation={3} sx={{ height: 1 / 1 }}>
-              {/* Ranking Graph */}
-              <Box sx={{ p: 2 }}>
-                <Typography>TODO: Ranking graph here</Typography>
-              </Box>
-            </Paper>
+            <RankingGraph rankHistoryData={rankHistoryData} />
           </Box>
           <Box sx={{ width: 1 / 3 }}>
-            <Paper elevation={3}>
-              {/* Overall Stats */}
-              <Box sx={{ p: 2 }}>
-                <Typography variant="h6" sx={{ pb: 1 }}>
-                  Gameplay Stats
-                </Typography>
-                <Stack direction="column">
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Performance Points</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.performancePoints)}pp
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Overall Accuracy</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.accuracy)}%
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Ranked Score</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.rankedScore)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Total Score</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.totalScore)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Play Time</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatPlayTime(statsData.playTime)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Play Count</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.playCount)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Highest Combo</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.highestCombo)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>Total Hits</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.totalHits)}
-                    </Typography>
-                  </Stack>
-                  {/* TODO: Make grade counts a custom component of its own */}
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>SS Count (Hidden)</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.xhCount)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>SS Count (No Hidden)</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.xCount)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>S Count (Hidden)</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.shCount)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>S Count (No Hidden)</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.sCount)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row">
-                    <Typography sx={{ width: 1 / 2 }}>A Count</Typography>
-                    <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-                      {formatNumber(statsData.aCount)}
-                    </Typography>
-                  </Stack>
-                </Stack>
-              </Box>
-            </Paper>
+            <GameplayStats statsData={statsData} />
           </Box>
         </Stack>
         <Box>
-          <Paper elevation={3}>
-            {/* Best Scores */}
-            <Box sx={{ p: 2 }}>
-              <Typography variant="h6" sx={{ pb: 1 }}>
-                Best Scores
-              </Typography>
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="best scores table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <Typography>Grade</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Beatmap</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Performance</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Score</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Accuracy</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Combo</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Submitted At</Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {bestScores.map((score: Score) => (
-                      <TableRow>
-                        {/* TODO: images for the grades */}
-                        <TableCell>{score.grade}</TableCell>
-                        {/* TODO: full beatmap name & diffname */}
-                        {/* TODO: clickable to go to beatmap page */}
-                        <TableCell>
-                          <Typography>
-                            {score.beatmapMd5} {score.mods ? `+${formatMods(score.mods)}` : ""}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{formatNumber(score.performancePoints)}pp</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{formatNumber(score.score)}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{formatNumber(score.accuracy)}%</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{formatNumber(score.highestCombo)}x</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </Paper>
+          <Scores scoresData={bestScores} title="Best Scores" />
         </Box>
         <Box>
-          {/* Recent Scores */}
-          <Paper elevation={3}>
-            <Box sx={{ p: 2 }}>
-              <Typography variant="h6" sx={{ pb: 1 }}>
-                Recent Scores
-              </Typography>
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="recent scores table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <Typography>Grade</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Beatmap</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Performance</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Score</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Accuracy</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Combo</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography>Submitted At</Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {recentScores.map((score: Score) => (
-                      <TableRow>
-                        {/* TODO: images for the grades */}
-                        <TableCell>{score.grade}</TableCell>
-                        {/* TODO: full beatmap name & diffname */}
-                        {/* TODO: clickable to go to beatmap page */}
-                        <TableCell>
-                          <Typography>
-                            {score.beatmapMd5} {score.mods ? `+${formatMods(score.mods)}` : ""}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{formatNumber(score.performancePoints)}pp</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{formatNumber(score.score)}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{formatNumber(score.accuracy)}%</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{formatNumber(score.highestCombo)}x</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </Paper>
+          <Scores scoresData={recentScores} title="Recent Scores" />
         </Box>
       </Stack>
     </>
