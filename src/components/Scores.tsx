@@ -56,8 +56,9 @@ export const Scores = ({ title, scoresData }: { title: string; scoresData: Score
                   {/* TODO: full beatmap name & diffname */}
                   {/* TODO: clickable to go to beatmap page */}
                   <TableCell>
-                    <Typography>
-                      {score.beatmapMd5} {score.mods ? `+${formatMods(score.mods)}` : ""}
+                    <Typography variant="subtitle2">
+                      {score.beatmapArtist} - {score.beatmapTitle} [{score.beatmapVersion}]{" "}
+                      {score.mods ? `+${formatMods(score.mods)}` : ""}
                     </Typography>
                   </TableCell>
                   <TableCell>
