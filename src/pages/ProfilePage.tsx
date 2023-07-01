@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Typography, Paper, Alert } from "@mui/material";
+import { Typography, Paper, Alert, Avatar } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
@@ -10,22 +10,43 @@ import { fetchStats } from "../adapters/stats";
 import { GameplayStats } from "../components/GameplayStats";
 import { Scores } from "../components/Scores";
 import { RankingGraph } from "../components/RankingGraph";
+import { fetchOneAccount } from "../adapters/accounts";
+import { Account } from "../interfaces/accounts";
 
 export const ProfilePage = () => {
   const [bestScores, setBestScores] = useState<Score[] | null>(null);
+  const [account, setAccount] = useState<Account | null>(null);
   const [recentScores, setRecentScores] = useState<Score[] | null>(null);
   const [statsData, fetchModeStats] = useState<Stats | null>(null);
   const rankHistoryData = null; // TODO
   const [error, setError] = useState("");
-
   const { accountId } = useParams();
+
+  const osuSession = null;
+
+  useEffect(() => {
+    const fetchProfileAccount = async () => {
+      if (!accountId) return;
+
+      const account = await fetchOneAccount(parseInt(accountId));
+      if (account.status === "error") {
+        setError("Failed to fetch data from server");
+        return;
+      }
+
+      setAccount(account.data);
+    };
+
+    // run this asynchronously
+    fetchProfileAccount().catch(console.error);
+  }, [accountId]);
 
   useEffect(() => {
     const fetchProfileBestScores = async () => {
       if (!accountId) return;
 
       const playerBestScores = await fetchManyScores({
-        accountId: parseInt(accountId), // TODO: need to fix backend
+        accountId: parseInt(accountId),
         page: 1,
         pageSize: 50,
         sortBy: "performance_points",
@@ -93,12 +114,12 @@ export const ProfilePage = () => {
   }
   const userpageContent = undefined; //"Hello World!"; // TODO: dynamic
 
-  if (!statsData || !bestScores || !recentScores) {
-    // loading state
-    return <>loading data</>;
-  }
   if (error) {
     return <Alert severity="error">Something went wrong while loading the page</Alert>;
+  }
+  if (!account || !statsData || !bestScores || !recentScores) {
+    // loading state
+    return <>loading data</>;
   }
 
   return (
@@ -106,43 +127,40 @@ export const ProfilePage = () => {
       {/* TODO: is this an antipattern? */}
       <Box sx={{ mt: 2 }}></Box>
 
-      <Stack direction="column" spacing={2}>
-        <Box>
-          {/* Avatar / Name / Online Status */}
-          <Paper elevation={3} sx={{ p: 2, height: "12rem" }}>
-            <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-              <Typography>Gaming</Typography>
-              <Typography>Gaming</Typography>
-              <Typography>Gaming</Typography>
-            </Stack>
-          </Paper>
-        </Box>
-        {userpageContent && (
+      <Paper elevation={3} sx={{ p: 2 }}>
+        <Stack direction="column" spacing={2}>
           <Box>
-            {/* Userpage Content */}
-            <Paper elevation={3} sx={{ p: 2, height: "12rem" }}>
-              <Stack direction="column">
-                <Typography variant="h6">Userpage</Typography>
-                <Typography variant="body1">{userpageContent}</Typography>
+            {/* Avatar / Name / Online Status */}
+            <Paper elevation={3}>
+              <Stack direction="row" spacing={2} sx={{ p: 2 }}>
+                <Avatar
+                  alt="user-avatar"
+                  src="https://a.akatsuki.gg/1001"
+                  sx={{ width: 124, height: 124 }}
+                />
+                <Stack direction="column">
+                  <Typography variant="h5">{account.username}</Typography>
+                  <Typography variant="subtitle1">{osuSession ? "Online" : "Offline"}</Typography>
+                </Stack>
               </Stack>
             </Paper>
           </Box>
-        )}
-        <Stack direction="row" spacing={2} sx={{ justifyContent: "space-evenly" }}>
-          <Box sx={{ width: 2 / 3 }}>
-            <RankingGraph rankHistoryData={rankHistoryData} />
+          <Stack direction="row" spacing={2} sx={{ justifyContent: "space-evenly" }}>
+            <Box sx={{ width: 1 / 3 }}>
+              <GameplayStats statsData={statsData} />
+            </Box>
+            <Box sx={{ width: 2 / 3 }}>
+              <RankingGraph rankHistoryData={rankHistoryData} />
+            </Box>
+          </Stack>
+          <Box>
+            <Scores scoresData={bestScores} title="Best Scores" />
           </Box>
-          <Box sx={{ width: 1 / 3 }}>
-            <GameplayStats statsData={statsData} />
+          <Box>
+            <Scores scoresData={recentScores} title="Recent Scores" />
           </Box>
         </Stack>
-        <Box>
-          <Scores scoresData={bestScores} title="Best Scores" />
-        </Box>
-        <Box>
-          <Scores scoresData={recentScores} title="Recent Scores" />
-        </Box>
-      </Stack>
+      </Paper>
     </>
   );
 };
