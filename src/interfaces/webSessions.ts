@@ -1,6 +1,6 @@
 export type Session = {
   sessionId: string;
-  accountId: string;
+  accountId: number;
   expiresAt: Date;
   createdAt: Date;
   updatedAt: Date;

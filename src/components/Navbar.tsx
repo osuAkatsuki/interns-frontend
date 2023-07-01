@@ -73,7 +73,7 @@ export default function Navbar() {
                 >
                   {/* TODO: is const 24x24 really a good idea? breakpoints? */}
                   {/* TODO: store avatarUrl on a per-user basis; ideally w/ breakpoints */}
-                  <Avatar sx={{ width: 24, height: 24 }} src={"https://a.akatsuki.gg/1001"} />
+                  <Avatar sx={{ width: 24, height: 24 }} src="https://a.akatsuki.gg/1001" />
                 </IconButton>
               </Tooltip>
               <Button onClick={handleAccountSettingsClick}>

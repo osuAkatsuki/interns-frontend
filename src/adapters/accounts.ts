@@ -70,7 +70,7 @@ export const createAccount = async (
   }
 };
 
-export const fetchOneAccount = async (accountId: string): Promise<Success<Account> | Failure> => {
+export const fetchOneAccount = async (accountId: number): Promise<Success<Account> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(`${baseUrl}/v1/accounts/${accountId}`, {
