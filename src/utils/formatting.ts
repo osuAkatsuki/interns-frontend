@@ -3,6 +3,8 @@ const NUMBER_FORMAT = new Intl.NumberFormat("en-us");
 
 export const formatNumber = (n: number): string => NUMBER_FORMAT.format(Number(n.toFixed(2)));
 
+export const formatDate = (date: Date): string => date.toLocaleString("en-US");
+
 enum TimeUnits {
   Seconds = 1,
   Minutes = 60 * Seconds,
@@ -23,6 +25,7 @@ export const formatTimespan = (seconds: number): string => {
   seconds %= TimeUnits.Hours;
   const minutes = Math.floor(seconds / TimeUnits.Minutes);
   seconds %= TimeUnits.Minutes;
+  seconds = Math.floor(seconds);
 
   const parts = [];
   if (centuries > 0) parts.push(`${centuries}c`);
