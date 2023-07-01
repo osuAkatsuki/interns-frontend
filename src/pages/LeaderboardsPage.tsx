@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { Stats } from "../interfaces/stats";
 import { formatNumber } from "../utils/formatting";
 
+import { getFlagUrl } from "../utils/countries";
+
 export const LeaderboardsPage = () => {
   const [data, setData] = useState<Stats[] | null>(null);
   const [error, setError] = useState("");
@@ -82,15 +84,13 @@ export const LeaderboardsPage = () => {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell>
+                      {/* TODO: dynamic flags */}
                       <Box
                         component="img"
-                        sx={{
-                          height: 36 / 2,
-                          width: 36,
-                          boxShadow: 2,
-                        }}
+                        width={36}
+                        height={36}
                         alt="flag-image"
-                        src={`https://flagcdn.com/${/*row.country*/ "ca".toLowerCase()}.svg`}
+                        src={getFlagUrl("CA")}
                       />
                     </TableCell>
                     <TableCell component="th" scope="row">
