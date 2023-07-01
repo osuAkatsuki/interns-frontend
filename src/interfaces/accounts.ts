@@ -1,9 +1,8 @@
 export type Account = {
-  accountId: string;
+  accountId: number;
   username: string;
-  firstName: string;
-  lastName: string;
-  status: string;
+  privileges: number;
+  country: string;
+  silenceEnd: Date | null;
   createdAt: Date;
-  updatedAt: Date;
 };

@@ -12,11 +12,10 @@ const deserializeSuccessResponse = (responseData: any): Success<Account> => {
     data: {
       accountId: responseData.data.account_id,
       username: responseData.data.username,
-      firstName: responseData.data.first_name,
-      lastName: responseData.data.last_name,
-      status: responseData.data.status,
+      privileges: responseData.data.privileges,
+      country: responseData.data.country,
+      silenceEnd: new Date(responseData.data.silence_end),
       createdAt: new Date(responseData.data.created_at),
-      updatedAt: new Date(responseData.data.updated_at),
     },
     meta: {
       page: responseData.meta.page,
@@ -119,15 +118,14 @@ export const fetchManyAccounts = async (
     }
     return {
       status: "success",
-      data: responseData.data.map((account: any) => {
+      data: responseData.data.map((account: any): Account => {
         return {
           accountId: account.account_id,
           username: account.username,
-          firstName: account.first_name,
-          lastName: account.last_name,
-          status: account.status,
+          privileges: account.privileges,
+          country: account.country,
+          silenceEnd: new Date(account.silence_end),
           createdAt: new Date(account.created_at),
-          updatedAt: new Date(account.updated_at),
         };
       }),
       meta: {
