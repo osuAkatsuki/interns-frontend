@@ -51,6 +51,11 @@ export default function Navbar() {
               <Typography variant="subtitle1">Leaderboards</Typography>
             </Button>
           </Link>
+          <Link to="/documentation">
+            <Button>
+              <Typography variant="subtitle1">Documentation</Typography>
+            </Button>
+          </Link>
         </Stack>
         {/* Right Navbar */}
         <Stack direction="row" spacing={1}>
