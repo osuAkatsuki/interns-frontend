@@ -48,6 +48,9 @@ const theme = createTheme({
       main: "#e03997",
     },
   },
+  typography: {
+    fontFamily: "Rubik",
+  },
 });
 
 export default function App() {
