@@ -139,7 +139,7 @@ export const fetchManyScores = async ({
       page: page,
       page_size: pageSize,
     });
-    const response = await fetch(`${baseUrl}/v1/scores` + `?${query}`, {
+    const response = await fetch(`${baseUrl}/v1/scores?${query}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
