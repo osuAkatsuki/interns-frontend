@@ -16,18 +16,16 @@ export const HomePage = () => {
       }}
     >
       <Typography variant="h2">Welcome to Akatsuki</Typography>
-      <Typography variant="h4">
-        The largest competitive osu! private server
-      </Typography>
+      <Typography variant="h4">The largest competitive osu! private server</Typography>
 
       {/* TODO: is this an antipattern? */}
       <Box sx={{ mt: 2 }}></Box>
 
       <Stack direction="row" spacing={2}>
         {user ? (
-          <Link to="/support">
+          <Link to={`/profile/${user.account.accountId}`}>
             <Button variant="contained" color="primary">
-              <Typography variant="h6">Support</Typography>
+              <Typography variant="h6">My Profile</Typography>
             </Button>
           </Link>
         ) : (

@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useUserContext } from "../users";
-import { login } from "../adapters/sessions";
+import { login } from "../adapters/webSessions";
 import { fetchOneAccount } from "../adapters/accounts";
 import { Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -28,9 +28,7 @@ export const LoginPage = () => {
     }
 
     // fetch account data
-    const accountResponse = await fetchOneAccount(
-      sessionResponse.data.accountId
-    );
+    const accountResponse = await fetchOneAccount(sessionResponse.data.accountId);
     if (accountResponse.status === "error") {
       setLoginError(`${accountResponse.message} (${accountResponse.error})`);
       console.error("login failed", accountResponse);
@@ -61,14 +59,11 @@ export const LoginPage = () => {
     >
       <Typography>Sign in to an existing account</Typography>
       {loginError && <Alert severity="error">{loginError}</Alert>}
-      <TextField
-        label="Username"
-        onInput={(e) => setUsername((e.target as HTMLTextAreaElement).value)}
-      ></TextField>
+      <TextField label="Username" onInput={(e) => setUsername((e.target as any).value)}></TextField>
       <TextField
         label="Password"
         type="password"
-        onInput={(e) => setPassword((e.target as HTMLTextAreaElement).value)}
+        onInput={(e) => setPassword((e.target as any).value)}
       ></TextField>
       <Button variant="outlined" onClick={handleLogin}>
         <Typography>Submit login</Typography>

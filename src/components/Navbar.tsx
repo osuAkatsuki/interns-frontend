@@ -2,16 +2,8 @@ import * as React from "react";
 import { Typography, Button, Stack } from "@mui/material";
 import { useUserContext, removeUserFromLocalStorage } from "../users";
 import { Link } from "react-router-dom";
-import { logout } from "../adapters/sessions";
-import {
-  Avatar,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
+import { logout } from "../adapters/webSessions";
+import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import { FavoriteOutlined, Logout, Settings } from "@mui/icons-material";
 
 export default function Navbar() {
@@ -75,24 +67,17 @@ export default function Navbar() {
               <Tooltip title="Account settings">
                 <IconButton
                   onClick={handleAccountSettingsClick}
-                  aria-controls={
-                    accountSettingsOpen ? "account-menu" : undefined
-                  }
+                  aria-controls={accountSettingsOpen ? "account-menu" : undefined}
                   aria-haspopup="true"
                   aria-expanded={accountSettingsOpen ? "true" : undefined}
                 >
                   {/* TODO: is const 24x24 really a good idea? breakpoints? */}
                   {/* TODO: store avatarUrl on a per-user basis; ideally w/ breakpoints */}
-                  <Avatar
-                    sx={{ width: 24, height: 24 }}
-                    src={"https://a.akatsuki.gg/1001"}
-                  />
+                  <Avatar sx={{ width: 24, height: 24 }} src="https://a.akatsuki.gg/1001" />
                 </IconButton>
               </Tooltip>
               <Button onClick={handleAccountSettingsClick}>
-                <Typography variant="subtitle1">
-                  {user.account.firstName}
-                </Typography>
+                <Typography variant="subtitle1">{user.account.firstName}</Typography>
               </Button>
             </>
           ) : (

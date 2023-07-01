@@ -5,28 +5,20 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Alert, Box, Typography } from "@mui/material";
+import { Alert, Box, Button, Stack, Typography } from "@mui/material";
 
 import { fetchManyStats } from "../adapters/stats";
 import { useEffect, useState } from "react";
 import { Stats } from "../interfaces/stats";
-import { useUserContext } from "../users";
+import { formatNumber } from "../utils/formatting";
 
-const EN_US_NUMBER_FORMAT = new Intl.NumberFormat("en-us");
-
-interface LeaderboardEntry {
-  username: string;
-  country: string;
-  overall_pp: number;
-  ranked_score: number;
-  overall_acc: number;
-  playcount: number;
-  level: number;
-}
+import { getFlagUrl } from "../utils/countries";
+import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "../gameModes";
 
 export const LeaderboardsPage = () => {
   const [data, setData] = useState<Stats[] | null>(null);
-  const [isLoading, setLoading] = useState(false); // is this a reason to sep from data!=null?
+  const [gameMode, setGameMode] = useState(ClientGameMode.Standard);
+  const [relaxMode, setRelaxMode] = useState(RelaxMode.Vanilla);
   const [error, setError] = useState("");
 
   // TODO: buttons for pagination
@@ -34,8 +26,10 @@ export const LeaderboardsPage = () => {
   const PAGE_SIZE = 50;
 
   useEffect(() => {
+    const serverGameMode = toServerModeFromClientAndRelaxModes(gameMode, relaxMode);
     const fetchData = async () => {
       const allStats = await fetchManyStats({
+        gameMode: serverGameMode,
         page: page,
         pageSize: PAGE_SIZE,
       });
@@ -49,93 +43,109 @@ export const LeaderboardsPage = () => {
 
     // run this asynchronously
     fetchData().catch(console.error);
-  }, []);
+  }, [gameMode, relaxMode]);
+
+  if (!data) {
+    // TODO: use https://mui.com/material-ui/react-skeleton/
+    return <Typography>The page is currently loading</Typography>;
+  }
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>;
+  }
 
   return (
     <>
       {/* TODO: is this an antipattern? */}
       <Box sx={{ mt: 2 }}></Box>
 
-      {error && <Alert severity="error">{error}</Alert>}
-
-      {isLoading ? (
-        <>
-          <Typography>
-            {/* TODO: https://mui.com/material-ui/react-skeleton/ */}
-            The page is currently loading
-          </Typography>
-        </>
-      ) : (
-        data && (
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="leaderboard-table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Country</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>Username</Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography>Performance Points</Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography>Ranked Score</Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography>Accuracy</Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography>Play Count</Typography>
-                  </TableCell>
-                  <TableCell align="right">
+      <Stack direction="column" spacing={1}>
+        <Typography variant="h4">Leaderboards</Typography>
+        <Stack spacing={1}>
+          <Stack direction="row" spacing={1}>
+            <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Standard)}>
+              Standard
+            </Button>
+            <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Taiko)}>
+              Taiko
+            </Button>
+            <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Catch)}>
+              Catch The Beat
+            </Button>
+            <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Mania)}>
+              Mania
+            </Button>
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Vanilla)}>
+              Vanilla
+            </Button>
+            <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Relax)}>
+              Relax
+            </Button>
+            <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Autopilot)}>
+              Autopilot
+            </Button>
+          </Stack>
+        </Stack>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="leaderboard-table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography>Country</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Username</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography>Performance</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography>Overall Accuracy</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography>Ranked Score</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography>Play Count</Typography>
+                </TableCell>
+                {/* <TableCell align="right">
                     <Typography>Level</Typography>
+                  </TableCell> */}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {/* TODO: username instead of account id */}
+              {data.map((row: Stats) => (
+                <TableRow
+                  key={row.country}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>
+                    {/* TODO: dynamic flags */}
+                    <Box
+                      component="img"
+                      width={36}
+                      height={36}
+                      alt="flag-image"
+                      src={getFlagUrl(row.country)}
+                    />
                   </TableCell>
+                  <TableCell component="th" scope="row">
+                    {row.username}
+                  </TableCell>
+                  <TableCell align="right">{formatNumber(row.performancePoints)}pp</TableCell>
+                  <TableCell align="right">{formatNumber(row.accuracy)}%</TableCell>
+                  <TableCell align="right">{formatNumber(row.rankedScore)}</TableCell>
+                  <TableCell align="right">{formatNumber(row.playCount)}</TableCell>
+                  {/* <TableCell align="right">Lv. {row.level}</TableCell> */}
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {/* TODO: username instead of account id */}
-                {data.map((row) => (
-                  <TableRow
-                    key={/*row.country*/ undefined}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell>
-                      <Box
-                        component="img"
-                        sx={{
-                          height: 36 / 2,
-                          width: 36,
-                          boxShadow: 2,
-                        }}
-                        alt="flag-image"
-                        src={`https://flagcdn.com/${
-                          /*row.country*/ "ca".toLowerCase()
-                        }.svg`}
-                      />
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {/*row.username*/ undefined}
-                    </TableCell>
-                    <TableCell align="right">
-                      {EN_US_NUMBER_FORMAT.format(row.performancePoints)}
-                    </TableCell>
-                    <TableCell align="right">
-                      {EN_US_NUMBER_FORMAT.format(row.rankedScore)}
-                    </TableCell>
-                    <TableCell align="right">{row.accuracy}%</TableCell>
-                    <TableCell align="right">
-                      {EN_US_NUMBER_FORMAT.format(row.playCount)}
-                    </TableCell>
-                    {/* <TableCell align="right">Lv. {row.level}</TableCell> */}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )
-      )}
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Stack>
     </>
   );
 };
