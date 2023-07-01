@@ -35,7 +35,7 @@ enum Mods {
 
 export const formatMods = (mods: number): string => {
   if (mods == Mods.NOMOD) {
-    return "NM";
+    return "";
   }
 
   let activeMods: string[] = [];
