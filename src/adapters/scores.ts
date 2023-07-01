@@ -32,6 +32,19 @@ const deserializeSuccessResponse = (responseData: any): Success<Score> => {
       timeElapsed: responseData.data.time_elapsed,
       createdAt: new Date(responseData.data.created_at),
       updatedAt: new Date(responseData.data.updated_at),
+      beatmapSetId: responseData.data.beatmap_set_id,
+      beatmapRankedStatus: responseData.data.beatmap_ranked_status,
+      beatmapArtist: responseData.data.beatmap_artist,
+      beatmapTitle: responseData.data.beatmap_title,
+      beatmapVersion: responseData.data.beatmap_version,
+      beatmapCreator: responseData.data.beatmap_creator,
+      beatmapMaxCombo: responseData.data.beatmap_max_combo,
+      beatmapBpm: responseData.data.beatmap_bpm,
+      beatmapCs: responseData.data.beatmap_cs,
+      beatmapAr: responseData.data.beatmap_ar,
+      beatmapOd: responseData.data.beatmap_od,
+      beatmapHp: responseData.data.beatmap_hp,
+      beatmapStarRating: responseData.data.beatmap_star_rating,
     },
     meta: {
       page: responseData.meta.page,
@@ -87,6 +100,8 @@ export const fetchManyScores = async ({
   mods = undefined,
   submissionStatuses = undefined,
   friends = undefined,
+  beatmapRankedStatus = undefined,
+  beatmapSetId = undefined,
   sortBy = "performance_points",
   page = 1,
   pageSize = 50,
@@ -100,6 +115,8 @@ export const fetchManyScores = async ({
   mods?: number;
   submissionStatuses?: number[];
   friends?: number[];
+  beatmapRankedStatus?: number;
+  beatmapSetId?: number;
   sortBy: "score" | "performance_points" | "accuracy" | "highest_combo" | "grade" | "created_at";
   page?: number;
   pageSize?: number;
@@ -116,6 +133,8 @@ export const fetchManyScores = async ({
       mods: mods,
       submission_statuses: submissionStatuses,
       friends: friends,
+      beatmap_ranked_status: beatmapRankedStatus,
+      beatmap_set_id: beatmapSetId,
       sort_by: sortBy,
       page: page,
       page_size: pageSize,
@@ -157,6 +176,20 @@ export const fetchManyScores = async ({
         timeElapsed: score.time_elapsed,
         createdAt: new Date(score.created_at),
         updatedAt: new Date(score.updated_at),
+        // beatmap fields for convenience
+        beatmapSetId: score.beatmap_set_id,
+        beatmapRankedStatus: score.beatmap_ranked_status,
+        beatmapArtist: score.beatmap_artist,
+        beatmapTitle: score.beatmap_title,
+        beatmapVersion: score.beatmap_version,
+        beatmapCreator: score.beatmap_creator,
+        beatmapMaxCombo: score.beatmap_max_combo,
+        beatmapBpm: score.beatmap_bpm,
+        beatmapCs: score.beatmap_cs,
+        beatmapAr: score.beatmap_ar,
+        beatmapOd: score.beatmap_od,
+        beatmapHp: score.beatmap_hp,
+        beatmapStarRating: score.beatmap_star_rating,
       })),
       meta: {
         page: responseData.meta.page,

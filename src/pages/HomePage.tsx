@@ -23,9 +23,9 @@ export const HomePage = () => {
 
       <Stack direction="row" spacing={2}>
         {user ? (
-          <Link to="/support">
+          <Link to={`/profile/${user.account.accountId}`}>
             <Button variant="contained" color="primary">
-              <Typography variant="h6">Support</Typography>
+              <Typography variant="h6">My Profile</Typography>
             </Button>
           </Link>
         ) : (

@@ -21,4 +21,19 @@ export type Score = {
   timeElapsed: number;
   createdAt: Date;
   updatedAt: Date;
+
+  // beatmap attrs; here for convenience
+  beatmapSetId: number;
+  beatmapRankedStatus: number;
+  beatmapArtist: string;
+  beatmapTitle: string;
+  beatmapVersion: string;
+  beatmapCreator: string;
+  beatmapMaxCombo: number;
+  beatmapBpm: number;
+  beatmapCs: number;
+  beatmapAr: number;
+  beatmapOd: number;
+  beatmapHp: number;
+  beatmapStarRating: number;
 };
