@@ -90,11 +90,11 @@ export const LeaderboardsPage = () => {
                         width={36}
                         height={36}
                         alt="flag-image"
-                        src={getFlagUrl("CA")}
+                        src={getFlagUrl(row.country)}
                       />
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      {/*row.username*/ undefined}
+                      {row.username}
                     </TableCell>
                     <TableCell align="right">{formatNumber(row.performancePoints)}pp</TableCell>
                     <TableCell align="right">{formatNumber(row.rankedScore)}</TableCell>

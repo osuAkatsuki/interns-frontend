@@ -23,6 +23,9 @@ const deserializeSuccessResponse = (responseData: any): Success<Stats> => {
       shCount: responseData.data.sh_count,
       sCount: responseData.data.s_count,
       aCount: responseData.data.a_count,
+      // account info; here for convenience
+      username: responseData.data.username,
+      country: responseData.data.country,
     },
     meta: {
       page: responseData.meta.page,
@@ -109,6 +112,9 @@ export const fetchManyStats = async ({
           shCount: stats.sh_count,
           sCount: stats.s_count,
           aCount: stats.a_count,
+          // account info; here for convenience
+          username: stats.username,
+          country: stats.country,
         };
       }),
       meta: {

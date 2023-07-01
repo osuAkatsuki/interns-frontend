@@ -15,4 +15,7 @@ export type Stats = {
   shCount: number;
   sCount: number;
   aCount: number;
+  // account info; here for convenience
+  username: string;
+  country: string;
 };
