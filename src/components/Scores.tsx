@@ -35,13 +35,13 @@ export const Scores = ({ title, scoresData }: { title: string; scoresData: Score
                   <Typography>Performance</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>Score</Typography>
-                </TableCell>
-                <TableCell>
                   <Typography>Accuracy</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography>Combo</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>Score</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography>Submitted At</Typography>
@@ -64,13 +64,13 @@ export const Scores = ({ title, scoresData }: { title: string; scoresData: Score
                     <Typography>{formatNumber(score.performancePoints)}pp</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{formatNumber(score.score)}</Typography>
-                  </TableCell>
-                  <TableCell>
                     <Typography>{formatNumber(score.accuracy)}%</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography>{formatNumber(score.highestCombo)}x</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{formatNumber(score.score)}</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
