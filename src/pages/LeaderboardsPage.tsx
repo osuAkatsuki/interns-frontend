@@ -2,6 +2,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
+import { Link } from "react-router-dom";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
@@ -129,12 +130,22 @@ export const LeaderboardsPage = () => {
                     />
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {row.username}
+                    <Typography>
+                      <Link to={`/profile/${row.accountId}`}>{row.username}</Link>
+                    </Typography>
                   </TableCell>
-                  <TableCell align="right">{formatNumber(row.performancePoints)}pp</TableCell>
-                  <TableCell align="right">{formatNumber(row.accuracy)}%</TableCell>
-                  <TableCell align="right">{formatNumber(row.rankedScore)}</TableCell>
-                  <TableCell align="right">{formatNumber(row.playCount)}</TableCell>
+                  <TableCell align="right">
+                    <Typography>{formatNumber(row.performancePoints)}pp</Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography>{formatNumber(row.accuracy)}%</Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography>{formatNumber(row.rankedScore)}</Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography>{formatNumber(row.playCount)}</Typography>
+                  </TableCell>
                   {/* <TableCell align="right">Lv. {row.level}</TableCell> */}
                 </TableRow>
               ))}
