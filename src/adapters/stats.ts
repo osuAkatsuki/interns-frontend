@@ -1,5 +1,6 @@
 import { type Stats } from "../interfaces/stats";
 import type { Success, Failure } from "../interfaces/api";
+import queryString from "query-string";
 
 // TODO: implement retry logic
 
@@ -71,22 +72,36 @@ export const fetchStats = async (
     };
   }
 };
+
 export const fetchManyStats = async ({
+  accountId,
+  gameMode,
   page = 1,
   pageSize = 50,
 }: {
+  accountId?: number;
+  gameMode?: number;
   page?: number;
   pageSize?: number;
 } = {}): Promise<Success<Stats[]> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
-    const response = await fetch(`${baseUrl}/v1/stats?page=${page}&page_size=${pageSize}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "User-Agent": "basic-frontend/v0.0.1",
-      },
-    });
+    const queryParams = {
+      account_id: accountId,
+      game_mode: gameMode,
+      page: page,
+      page_size: pageSize,
+    };
+    const response = await fetch(
+      `${baseUrl}/v1/stats` + (queryParams && `?${queryString.stringify(queryParams)}`),
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "basic-frontend/v0.0.1",
+        },
+      }
+    );
     const responseData = await response.json();
     if (!response.ok || responseData.status !== "success") {
       console.error("An error occurred while processing the response.", responseData);
