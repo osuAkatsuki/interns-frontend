@@ -98,7 +98,7 @@ export const fetchManyOsuSessions = async (page: number, pageSize: number) => {
     if (responseData.status === "success") {
       return {
         status: "success",
-        data: responseData.data.map((osuSession: any) => {
+        data: responseData.data.map((osuSession: any): OsuSession => {
           return {
             sessionId: osuSession.session_id,
             accountId: osuSession.account_id,

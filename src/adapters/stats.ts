@@ -109,7 +109,7 @@ export const fetchManyStats = async ({
     }
     return {
       status: "success",
-      data: responseData.data.map((stats: any) => {
+      data: responseData.data.map((stats: any): Stats => {
         return {
           accountId: stats.account_id,
           gameMode: stats.game_mode,
