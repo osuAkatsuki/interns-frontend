@@ -31,7 +31,8 @@ const deserializeFailureResponse = (responseData: any): Failure => {
 
 export const login = async (
   username: string,
-  password: string
+  password: string,
+  recaptchaToken: string
 ): Promise<Success<WebSession> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
@@ -41,7 +42,11 @@ export const login = async (
         "Content-Type": "application/json",
         "User-Agent": "basic-frontend/v0.0.1",
       },
-      body: JSON.stringify({ username: username, password: password }),
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        recaptcha_token: recaptchaToken,
+      }),
     });
     const responseData: Success<WebSession> | Failure = await response.json();
     if (!response.ok || responseData.status !== "success") {

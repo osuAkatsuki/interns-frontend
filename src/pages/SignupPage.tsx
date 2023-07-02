@@ -37,11 +37,15 @@ export const SignupPage = () => {
       return;
     }
 
-    console.log("recaptcha token", recaptchaToken);
-
     // sign up
     const country = "CA"; // TODO: dynamic
-    const accountResponse = await createAccount(username, emailAddress, password, country, recaptchaToken);
+    const accountResponse = await createAccount(
+      username,
+      emailAddress,
+      password,
+      country,
+      recaptchaToken
+    );
     if (accountResponse.status === "error") {
       setSignupError(`${accountResponse.message} (${accountResponse.error})`);
       console.error("signup failed", accountResponse);
@@ -50,7 +54,7 @@ export const SignupPage = () => {
 
     // upon signup, we automatically log the user in
     const account = accountResponse.data;
-    const sessionResponse = await login(username, password);
+    const sessionResponse = await login(username, password, recaptchaToken);
     if (sessionResponse.status === "error") {
       setSignupError(`${sessionResponse.message} (${sessionResponse.error})`);
       console.error("login failed", sessionResponse);

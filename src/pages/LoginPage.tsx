@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -8,6 +8,7 @@ import { login } from "../adapters/webSessions";
 import { fetchOneAccount } from "../adapters/accounts";
 import { Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -15,12 +16,21 @@ export const LoginPage = () => {
   const { setUser } = useUserContext();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const reRef = useRef<ReCAPTCHA>(null);
 
   const [loginError, setLoginError] = React.useState("");
 
   const handleLogin = async () => {
+    const recaptchaToken = await reRef.current?.executeAsync();
+    reRef.current?.reset();
+
+    if (!recaptchaToken) {
+      console.error("No recaptcha token received");
+      return;
+    }
+
     // login
-    const sessionResponse = await login(username, password);
+    const sessionResponse = await login(username, password, recaptchaToken);
     if (sessionResponse.status === "error") {
       setLoginError(`${sessionResponse.message} (${sessionResponse.error})`);
       console.error("login failed", sessionResponse);
@@ -68,6 +78,7 @@ export const LoginPage = () => {
         type="password"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
       ></TextField>
+      <ReCAPTCHA sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY!} size="invisible" ref={reRef} />
       <Button type="submit" variant="outlined" onClick={handleLogin}>
         <Typography>Submit login</Typography>
       </Button>
