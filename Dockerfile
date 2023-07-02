@@ -1,4 +1,4 @@
-FROM node:18.15.0-bullseye AS build
+FROM node:18.15.0-bullseye AS dependency
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -22,11 +22,16 @@ COPY scripts/injectEnv.js ./usr/src/app/build/injectEnv.js
 # Serve app statically via nginx
 FROM nginx
 
+# install nodejs (needed for injectEnv.js script)
+# TODO: this could be improved by rewriting it in bash
+COPY --from=dependency /usr/local /usr/local
+COPY --from=dependency /usr/lib /usr/lib
+
 WORKDIR /usr/src/app
 
 # Copy nginx config and static files
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+COPY --from=dependency /usr/src/app/build /usr/share/nginx/html
 
 # Move entrypoint script to image
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
