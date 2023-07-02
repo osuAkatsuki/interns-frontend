@@ -22,7 +22,7 @@ COPY scripts/injectEnv.js ./usr/src/app/build/injectEnv.js
 # Serve app statically via nginx
 FROM nginx
 
-# install nodejs (needed for injectEnv.js script)
+# Install nodejs (needed for injectEnv.js script)
 # TODO: this could be improved by rewriting it in bash
 COPY --from=dependency /usr/local /usr/local
 COPY --from=dependency /usr/lib /usr/lib
