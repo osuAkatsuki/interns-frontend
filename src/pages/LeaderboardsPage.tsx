@@ -35,7 +35,13 @@ export const LeaderboardsPage = () => {
         return;
       }
 
+      console.log("before");
+      console.log("allStats.data", allStats.data);
+      console.log("data", data);
       setData(allStats.data);
+      console.log("after");
+      console.log("allStats.data", allStats.data);
+      console.log("data", data);
     };
 
     // run this asynchronously
