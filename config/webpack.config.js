@@ -392,6 +392,15 @@ module.exports = function (webpackEnv) {
             {
               test: /\.(js|mjs|jsx|ts|tsx)$/,
               include: paths.appSrc,
+              use: [
+                isEnvProduction && {
+                  loader: "string-replace-loader",
+                  options: {
+                    search: /process\.env\.REACT_APP_/g,
+                    replace: "window.__ENV__.REACT_APP_",
+                  },
+                },
+              ],
               loader: require.resolve("babel-loader"),
               options: {
                 customize: require.resolve("babel-preset-react-app/webpack-overrides"),
