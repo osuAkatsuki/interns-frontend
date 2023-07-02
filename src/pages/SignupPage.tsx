@@ -17,7 +17,6 @@ export const SignupPage = () => {
   const [username, setUsername] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [captchaComplete, setCaptchaComplete] = useState(false);
   const reRef = useRef<ReCAPTCHA>(null);
 
   const [signupError, setSignupError] = useState("");
@@ -26,12 +25,13 @@ export const SignupPage = () => {
     if (!username) return true;
     if (!emailAddress) return true;
     if (!password) return true;
-    if (!captchaComplete) return true;
     return false;
   };
 
   const handleSignup = async () => {
     const recaptchaToken = await reRef.current?.executeAsync();
+    reRef.current?.reset();
+
     if (!recaptchaToken) {
       console.error("No recaptcha token received");
       return;
@@ -93,12 +93,7 @@ export const SignupPage = () => {
         label="Email Address"
         onInput={(e: React.ChangeEvent<HTMLInputElement>) => setEmailAddress(e.target.value)}
       ></TextField>
-      <ReCAPTCHA
-        sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY!}
-        size="invisible"
-        ref={reRef}
-        onChange={() => setCaptchaComplete(true)}
-      />
+      <ReCAPTCHA sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY!} size="invisible" ref={reRef} />
       <Button
         type="submit"
         disabled={submissionDisabled()}
