@@ -1,13 +1,13 @@
-import { type Session } from "../interfaces/webSessions";
+import { type WebSession } from "../interfaces/webSessions";
 import type { Success, Failure } from "../interfaces/api";
 
 // TODO: implement retry logic
 
-const deserializeSuccessResponse = (responseData: any): Success<Session> => {
+const deserializeSuccessResponse = (responseData: any): Success<WebSession> => {
   return {
     status: "success",
     data: {
-      sessionId: responseData.data.session_id,
+      webSessionId: responseData.data.web_session_id,
       accountId: responseData.data.account_id,
       expiresAt: new Date(responseData.data.expires_at),
       createdAt: new Date(responseData.data.created_at),
@@ -32,7 +32,7 @@ const deserializeFailureResponse = (responseData: any): Failure => {
 export const login = async (
   username: string,
   password: string
-): Promise<Success<Session> | Failure> => {
+): Promise<Success<WebSession> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(`${baseUrl}/v1/web_sessions`, {
@@ -43,7 +43,7 @@ export const login = async (
       },
       body: JSON.stringify({ username: username, password: password }),
     });
-    const responseData: Success<Session> | Failure = await response.json();
+    const responseData: Success<WebSession> | Failure = await response.json();
     if (!response.ok || responseData.status !== "success") {
       console.error("An error occurred while processing the response.", responseData);
       return deserializeFailureResponse(responseData);
@@ -58,7 +58,7 @@ export const login = async (
   }
 };
 
-export const logout = async (sessionId: string): Promise<Success<Session> | Failure> => {
+export const logout = async (webSessionId: string): Promise<Success<WebSession> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
     const response = await fetch(`${baseUrl}/v1/web_sessions`, {
@@ -69,7 +69,7 @@ export const logout = async (sessionId: string): Promise<Success<Session> | Fail
         "User-Agent": "basic-frontend/v0.0.1",
       },
     });
-    const responseData: Success<Session> | Failure = await response.json();
+    const responseData: Success<WebSession> | Failure = await response.json();
     if (!response.ok || responseData.status !== "success") {
       console.error("An error occurred while processing the response.", responseData);
       return deserializeFailureResponse(responseData);

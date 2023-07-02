@@ -1,5 +1,5 @@
-export type Session = {
-  sessionId: string;
+export type WebSession = {
+  webSessionId: string;
   accountId: number;
   expiresAt: Date;
   createdAt: Date;

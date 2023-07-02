@@ -1,9 +1,9 @@
 import React from "react";
-import type { Session } from "./interfaces/webSessions";
+import type { WebSession } from "./interfaces/webSessions";
 import type { Account } from "./interfaces/accounts";
 
 interface User {
-  session: Session;
+  session: WebSession;
   account: Account;
 }
 

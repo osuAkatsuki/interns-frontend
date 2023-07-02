@@ -1,5 +1,5 @@
 export type OsuSession = {
-  sessionId: string;
+  osuSessionId: string;
   accountId: string;
   username: string;
   utcOffset: number;
@@ -10,7 +10,7 @@ export type OsuSession = {
   beatmapMd5: string;
   beatmapId: number;
   mods: number;
-  spectatorHostSessionId: string | null;
+  spectatorHostOsuSessionId: string | null;
   awayMessage: string | null;
   multiplayerMatchId: number | null;
   lastNpBeatmapId: number | null;

@@ -23,7 +23,7 @@ export default function Navbar() {
       console.warn("User attempted a logout without being logged in");
       return;
     }
-    await logout(user.session.sessionId);
+    await logout(user.session.webSessionId);
     removeUserFromLocalStorage();
     setUser(null);
 

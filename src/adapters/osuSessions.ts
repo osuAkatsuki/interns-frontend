@@ -5,7 +5,7 @@ const mapToSuccessModel = (responseData: any): Success<OsuSession> => {
   return {
     status: "success",
     data: {
-      sessionId: responseData.data.session_id,
+      osuSessionId: responseData.data.osu_session_id,
       accountId: responseData.data.account_id,
       username: responseData.data.username,
       utcOffset: responseData.data.utcOffset,
@@ -16,7 +16,7 @@ const mapToSuccessModel = (responseData: any): Success<OsuSession> => {
       beatmapMd5: responseData.data.beatmap_md5,
       beatmapId: responseData.data.beatmap_id,
       mods: responseData.data.mods,
-      spectatorHostSessionId: responseData.data.spectator_host_session_id,
+      spectatorHostOsuSessionId: responseData.data.spectator_host_osu_session_id,
       awayMessage: responseData.data.away_message,
       multiplayerMatchId: responseData.data.multiplayer_match_id,
       lastNpBeatmapId: responseData.data.last_np_beatmap_id,
@@ -42,11 +42,11 @@ const mapToFailureModel = (responseData: any): Failure => {
 };
 
 export const fetchOneOsuSession = async (
-  sessionId: string
+  osuSessionId: string
 ): Promise<Success<OsuSession> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
-    const response = await fetch(`${baseUrl}/v1/osu_sessions/${sessionId}`, {
+    const response = await fetch(`${baseUrl}/v1/osu_sessions/${osuSessionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export const fetchManyOsuSessions = async (page: number, pageSize: number) => {
         status: "success",
         data: responseData.data.map((osuSession: any): OsuSession => {
           return {
-            sessionId: osuSession.session_id,
+            osuSessionId: osuSession.osu_session_id,
             accountId: osuSession.account_id,
             username: osuSession.username,
             utcOffset: osuSession.utcOffset,
@@ -111,7 +111,7 @@ export const fetchManyOsuSessions = async (page: number, pageSize: number) => {
             beatmapMd5: osuSession.beatmap_md5,
             beatmapId: osuSession.beatmap_id,
             mods: osuSession.mods,
-            spectatorHostSessionId: osuSession.spectator_host_session_id,
+            spectatorHostOsuSessionId: osuSession.spectator_host_osu_session_id,
             awayMessage: osuSession.away_message,
             multiplayerMatchId: osuSession.multiplayer_match_id,
             lastNpBeatmapId: osuSession.last_np_beatmap_id,
