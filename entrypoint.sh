@@ -3,7 +3,7 @@ set -e
 
 if [[ -n "$KUBERNETES" ]]; then
   source /vault/secrets/secrets.txt
-  node '/usr/src/app/build/injectEnv.js'
+  node '/usr/share/nginx/html/injectEnv.js'
 fi
 
 nginx -g "daemon off;"
