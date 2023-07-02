@@ -112,7 +112,6 @@ export const ProfilePage = () => {
       </>
     );
   }
-  const userpageContent = undefined; //"Hello World!"; // TODO: dynamic
 
   if (error) {
     return <Alert severity="error">Something went wrong while loading the page</Alert>;
