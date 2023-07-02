@@ -40,7 +40,8 @@ export const SignupPage = () => {
     console.log("recaptcha token", recaptchaToken);
 
     // sign up
-    const accountResponse = await createAccount(username, emailAddress, password, recaptchaToken);
+    const country = "CA"; // TODO: dynamic
+    const accountResponse = await createAccount(username, emailAddress, password, country, recaptchaToken);
     if (accountResponse.status === "error") {
       setSignupError(`${accountResponse.message} (${accountResponse.error})`);
       console.error("signup failed", accountResponse);

@@ -37,6 +37,7 @@ export const createAccount = async (
   username: string,
   emailAddress: string,
   password: string,
+  country: string,
   recaptchaToken: string
 ): Promise<Success<Account> | Failure> => {
   try {
@@ -51,6 +52,7 @@ export const createAccount = async (
         username: username,
         email_address: emailAddress,
         password: password,
+        country: country,
         recaptcha_token: recaptchaToken,
       }),
     });
