@@ -28,7 +28,7 @@ WORKDIR /usr/src/app
 
 # Copy nginx config and static files
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=dependency ./build /usr/share/nginx/html
+COPY --from=dependency /usr/src/app/build /usr/share/nginx/html
 
 # Move entrypoint script to image
 COPY ./entrypoint.sh ./entrypoint.sh
