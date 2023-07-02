@@ -17,7 +17,7 @@ RUN node_modules/.bin/tsc
 RUN yarn build
 
 # Add script to inject REACT_APP_* env vars into index.html
-COPY scripts/injectEnv.js ./usr/src/app/build/injectEnv.js
+COPY scripts/injectEnv.js /usr/src/app/build/injectEnv.js
 
 # Serve app statically via nginx
 FROM nginx
