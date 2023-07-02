@@ -61,17 +61,20 @@ export const SignupPage = () => {
     >
       <Typography>Sign up for a new account</Typography>
       {signupError && <Alert severity="error">{signupError}</Alert>}
-      <TextField label="Username" onInput={(e) => setUsername((e.target as any).value)}></TextField>
+      <TextField
+        label="Username"
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+      ></TextField>
       <TextField
         label="Password"
         type="password"
-        onInput={(e) => setPassword((e.target as any).value)}
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
       ></TextField>
       <TextField
         label="Email Address"
-        onInput={(e) => setEmailAddress((e.target as any).value)}
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) => setEmailAddress(e.target.value)}
       ></TextField>
-      <Button variant="outlined" onClick={handleSignup}>
+      <Button type="submit" variant="outlined" onClick={handleSignup}>
         <Typography>Submit signup</Typography>
       </Button>
     </Stack>

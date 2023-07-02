@@ -59,13 +59,16 @@ export const LoginPage = () => {
     >
       <Typography>Sign in to an existing account</Typography>
       {loginError && <Alert severity="error">{loginError}</Alert>}
-      <TextField label="Username" onInput={(e) => setUsername((e.target as any).value)}></TextField>
+      <TextField
+        label="Username"
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+      ></TextField>
       <TextField
         label="Password"
         type="password"
-        onInput={(e) => setPassword((e.target as any).value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
       ></TextField>
-      <Button variant="outlined" onClick={handleLogin}>
+      <Button type="submit" variant="outlined" onClick={handleLogin}>
         <Typography>Submit login</Typography>
       </Button>
     </Stack>
