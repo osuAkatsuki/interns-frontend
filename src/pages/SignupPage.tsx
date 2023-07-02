@@ -29,10 +29,10 @@ export const SignupPage = () => {
   };
 
   const handleSignup = async () => {
-    const recaptchaToken = await reRef.current?.executeAsync();
+    const signupRecaptchaToken = await reRef.current?.executeAsync();
     reRef.current?.reset();
 
-    if (!recaptchaToken) {
+    if (!signupRecaptchaToken) {
       console.error("No recaptcha token received");
       return;
     }
@@ -44,7 +44,7 @@ export const SignupPage = () => {
       emailAddress,
       password,
       country,
-      recaptchaToken
+      signupRecaptchaToken
     );
     if (accountResponse.status === "error") {
       setSignupError(`${accountResponse.message} (${accountResponse.error})`);
@@ -52,9 +52,17 @@ export const SignupPage = () => {
       return;
     }
 
+    const loginRecaptchaToken = await reRef.current?.executeAsync();
+    reRef.current?.reset();
+
+    if (!loginRecaptchaToken) {
+      console.error("No recaptcha token received");
+      return;
+    }
+
     // upon signup, we automatically log the user in
     const account = accountResponse.data;
-    const sessionResponse = await login(username, password, recaptchaToken);
+    const sessionResponse = await login(username, password, loginRecaptchaToken);
     if (sessionResponse.status === "error") {
       setSignupError(`${sessionResponse.message} (${sessionResponse.error})`);
       console.error("login failed", sessionResponse);
