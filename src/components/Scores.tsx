@@ -52,7 +52,9 @@ export const Scores = ({ title, scoresData }: { title: string; scoresData: Score
               {scoresData.map((score: Score) => (
                 <TableRow>
                   {/* TODO: images for the grades */}
-                  <TableCell>{score.grade}</TableCell>
+                  <TableCell>
+                    <Typography noWrap={true}>{score.grade}</Typography>
+                  </TableCell>
                   {/* TODO: full beatmap name & diffname */}
                   {/* TODO: clickable to go to beatmap page */}
                   <TableCell>
@@ -62,19 +64,19 @@ export const Scores = ({ title, scoresData }: { title: string; scoresData: Score
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{formatNumber(score.performancePoints)}pp</Typography>
+                    <Typography noWrap={true}>{formatNumber(score.performancePoints)}pp</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{formatNumber(score.accuracy)}%</Typography>
+                    <Typography noWrap={true}>{formatNumber(score.accuracy)}%</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{formatNumber(score.highestCombo)}x</Typography>
+                    <Typography noWrap={true}>{formatNumber(score.highestCombo)}x</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{formatNumber(score.score)}</Typography>
+                    <Typography noWrap={true}>{formatNumber(score.score)}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{score.createdAt.toLocaleString("en-US")}</Typography>
+                    <Typography noWrap={true}>{score.createdAt.toLocaleString("en-US")}</Typography>
                   </TableCell>
                 </TableRow>
               ))}
