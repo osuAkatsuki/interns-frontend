@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -8,6 +8,7 @@ import { login } from "../adapters/webSessions";
 import { useUserContext } from "../users";
 import { Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const SignupPage = () => {
   const navigate = useNavigate();
@@ -16,12 +17,35 @@ export const SignupPage = () => {
   const [username, setUsername] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+  const reRef = useRef<ReCAPTCHA>(null);
 
   const [signupError, setSignupError] = useState("");
 
+  const submissionDisabled = () => {
+    if (!username) return true;
+    if (!emailAddress) return true;
+    if (!password) return true;
+    return false;
+  };
+
   const handleSignup = async () => {
+    const recaptchaToken = await reRef.current?.executeAsync();
+    reRef.current?.reset();
+
+    if (!recaptchaToken) {
+      console.error("No recaptcha token received");
+      return;
+    }
+
     // sign up
-    const accountResponse = await createAccount(username, emailAddress, password);
+    const country = "CA"; // TODO: dynamic
+    const accountResponse = await createAccount(
+      username,
+      emailAddress,
+      password,
+      country,
+      recaptchaToken
+    );
     if (accountResponse.status === "error") {
       setSignupError(`${accountResponse.message} (${accountResponse.error})`);
       console.error("signup failed", accountResponse);
@@ -30,7 +54,7 @@ export const SignupPage = () => {
 
     // upon signup, we automatically log the user in
     const account = accountResponse.data;
-    const sessionResponse = await login(username, password);
+    const sessionResponse = await login(username, password, recaptchaToken);
     if (sessionResponse.status === "error") {
       setSignupError(`${sessionResponse.message} (${sessionResponse.error})`);
       console.error("login failed", sessionResponse);
@@ -74,7 +98,13 @@ export const SignupPage = () => {
         label="Email Address"
         onInput={(e: React.ChangeEvent<HTMLInputElement>) => setEmailAddress(e.target.value)}
       ></TextField>
-      <Button type="submit" variant="outlined" onClick={handleSignup}>
+      <ReCAPTCHA sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY!} size="invisible" ref={reRef} />
+      <Button
+        type="submit"
+        disabled={submissionDisabled()}
+        variant="outlined"
+        onClick={handleSignup}
+      >
         <Typography>Submit signup</Typography>
       </Button>
     </Stack>
