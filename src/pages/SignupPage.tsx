@@ -14,15 +14,14 @@ export const SignupPage = () => {
 
   const { setUser } = useUserContext();
   const [username, setUsername] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
 
   const [signupError, setSignupError] = useState("");
 
   const handleSignup = async () => {
     // sign up
-    const accountResponse = await createAccount(username, password, firstName, lastName);
+    const accountResponse = await createAccount(username, emailAddress, password);
     if (accountResponse.status === "error") {
       setSignupError(`${accountResponse.message} (${accountResponse.error})`);
       console.error("signup failed", accountResponse);
@@ -69,12 +68,8 @@ export const SignupPage = () => {
         onInput={(e) => setPassword((e.target as any).value)}
       ></TextField>
       <TextField
-        label="First Name"
-        onInput={(e) => setFirstName((e.target as any).value)}
-      ></TextField>
-      <TextField
-        label="Last Name"
-        onInput={(e) => setLastName((e.target as any).value)}
+        label="Email Address"
+        onInput={(e) => setEmailAddress((e.target as any).value)}
       ></TextField>
       <Button variant="outlined" onClick={handleSignup}>
         <Typography>Submit signup</Typography>

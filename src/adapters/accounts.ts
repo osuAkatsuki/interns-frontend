@@ -35,9 +35,8 @@ const deserializeFailureResponse = (responseData: any): Failure => {
 
 export const createAccount = async (
   username: string,
-  password: string,
-  firstName: string,
-  lastName: string
+  emailAddress: string,
+  password: string
 ): Promise<Success<Account> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
@@ -49,9 +48,8 @@ export const createAccount = async (
       },
       body: JSON.stringify({
         username: username,
+        email_address: emailAddress,
         password: password,
-        first_name: firstName,
-        last_name: lastName,
       }),
     });
     const responseData: Success<Account> | Failure = await response.json();
