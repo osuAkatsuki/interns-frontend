@@ -1,9 +1,18 @@
 import * as React from "react";
-import { Typography, Button, Stack } from "@mui/material";
+import { Typography, Button, Stack, Container } from "@mui/material";
 import { useUserContext, removeUserFromLocalStorage } from "../users";
 import { Link } from "react-router-dom";
 import { logout } from "../adapters/webSessions";
-import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
+import {
+  Paper,
+  Avatar,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
 import { FavoriteOutlined, Logout, Settings } from "@mui/icons-material";
 
 export default function Navbar() {
@@ -32,106 +41,111 @@ export default function Navbar() {
 
   return (
     <>
-      <Stack
-        direction="row"
-        sx={{
-          justifyContent: "space-between",
-        }}
-      >
-        {/* Left Navbar */}
-        <Stack direction="row" spacing={1} sx={{ display: "flex" }}>
-          <Link to="/">
-            <Button>
-              <Typography variant="subtitle1">Akatsuki</Typography>
-            </Button>
-          </Link>
-          <Divider orientation="vertical" flexItem />
-          <Link to="/leaderboards">
-            <Button>
-              <Typography variant="subtitle1">Leaderboards</Typography>
-            </Button>
-          </Link>
-          <Link to="/documentation">
-            <Button>
-              <Typography variant="subtitle1">Documentation</Typography>
-            </Button>
-          </Link>
-        </Stack>
-        {/* Right Navbar */}
-        <Stack direction="row" spacing={1}>
-          {/* TODO: add user search bar */}
-          {user ? (
-            <>
-              <Link to="/support">
-                {/* TODO: heart emoji */}
-                <IconButton aria-label="support">
-                  <FavoriteOutlined sx={{ color: "#db2828" }} />
-                </IconButton>
+      <Paper elevation={1} square>
+        <Container>
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: "space-between",
+              p: 1.25,
+            }}
+          >
+            {/* Left Navbar */}
+            <Stack direction="row" spacing={1} sx={{ display: "flex" }}>
+              <Link to="/">
+                <Button>
+                  <Typography variant="subtitle1">Akatsuki</Typography>
+                </Button>
               </Link>
+              <Divider orientation="vertical" flexItem />
+              <Link to="/leaderboards" style={{ textDecoration: "none" }}>
+                <Button>
+                  <Typography variant="subtitle1">Leaderboards</Typography>
+                </Button>
+              </Link>
+              <Link to="/documentation">
+                <Button>
+                  <Typography variant="subtitle1">Documentation</Typography>
+                </Button>
+              </Link>
+            </Stack>
+            {/* Right Navbar */}
+            <Stack direction="row" spacing={1}>
+              {/* TODO: add user search bar */}
+              {user ? (
+                <>
+                  <Link to="/support">
+                    {/* TODO: heart emoji */}
+                    <IconButton aria-label="support">
+                      <FavoriteOutlined sx={{ color: "#db2828" }} />
+                    </IconButton>
+                  </Link>
 
-              <Tooltip title="Account settings">
-                <Button
-                  onClick={handleAccountSettingsClick}
-                  aria-controls={accountSettingsOpen ? "account-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={accountSettingsOpen ? "true" : undefined}
-                >
-                  {/* TODO: is const 24x24 really a good idea? breakpoints? */}
-                  {/* TODO: store avatarUrl on a per-user basis; ideally w/ breakpoints */}
-                  <Avatar sx={{ width: 24, height: 24 }} src="https://a.akatsuki.gg/1001" />
-                  <Typography sx={{ pl: 1 }} variant="subtitle1">
-                    {user.account.username}
-                  </Typography>
-                </Button>
-              </Tooltip>
-            </>
-          ) : (
-            <>
-              <Link to="/login">
-                <Button>
-                  <Typography variant="subtitle1">Login</Typography>
-                </Button>
+                  <Tooltip title="Account settings">
+                    <Button
+                      onClick={handleAccountSettingsClick}
+                      aria-controls={accountSettingsOpen ? "account-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={accountSettingsOpen ? "true" : undefined}
+                    >
+                      {/* TODO: is const 24x24 really a good idea? breakpoints? */}
+                      {/* TODO: store avatarUrl on a per-user basis; ideally w/ breakpoints */}
+                      <Avatar sx={{ width: 24, height: 24 }} src="https://a.akatsuki.gg/1001" />
+                      <Typography sx={{ pl: 1 }} variant="subtitle1">
+                        {user.account.username}
+                      </Typography>
+                    </Button>
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">
+                    <Button>
+                      <Typography variant="subtitle1">Login</Typography>
+                    </Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button>
+                      <Typography variant="subtitle1">Signup</Typography>
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </Stack>
+          </Stack>
+          {user && (
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={accountSettingsOpen}
+              onClose={handleAccountSettingsClose}
+              onClick={handleAccountSettingsClose}
+            >
+              <Link to={`/profile/${user.account.accountId}`}>
+                <MenuItem onClick={handleAccountSettingsClose}>
+                  <Avatar src="https://a.akatsuki.gg/1001" />
+                  <Typography sx={{ pl: 1 }}>Profile</Typography>
+                </MenuItem>
               </Link>
-              <Link to="/signup">
-                <Button>
-                  <Typography variant="subtitle1">Signup</Typography>
-                </Button>
+              <Divider />
+              <Link to="/settings">
+                <MenuItem onClick={handleAccountSettingsClose}>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  <Typography>Settings</Typography>
+                </MenuItem>
               </Link>
-            </>
+              <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                <Typography>Logout</Typography>
+              </MenuItem>
+            </Menu>
           )}
-        </Stack>
-      </Stack>
-      {user && (
-        <Menu
-          anchorEl={anchorEl}
-          id="account-menu"
-          open={accountSettingsOpen}
-          onClose={handleAccountSettingsClose}
-          onClick={handleAccountSettingsClose}
-        >
-          <Link to={`/profile/${user.account.accountId}`}>
-            <MenuItem onClick={handleAccountSettingsClose}>
-              <Avatar src="https://a.akatsuki.gg/1001" />
-              <Typography sx={{ pl: 1 }}>Profile</Typography>
-            </MenuItem>
-          </Link>
-          <Divider />
-          <Link to="/settings">
-            <MenuItem onClick={handleAccountSettingsClose}>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              <Typography>Settings</Typography>
-            </MenuItem>
-          </Link>
-          <MenuItem onClick={handleLogout}>
-            <ListItemIcon>
-              <Logout fontSize="small" />
-            </ListItemIcon>
-            <Typography>Logout</Typography>
-          </MenuItem>
-        </Menu>
-      )}
+        </Container>
+      </Paper>
     </>
   );
 }

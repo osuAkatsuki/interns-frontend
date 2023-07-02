@@ -22,7 +22,9 @@ import { UserContextProvider } from "./users";
 const AppLayout = () => (
   <>
     <Navbar />
-    <Outlet />
+    <Container>
+      <Outlet />
+    </Container>
   </>
 );
 
@@ -60,9 +62,7 @@ export default function App() {
     <React.StrictMode>
       <ThemeProvider theme={theme}>
         <UserContextProvider>
-          <Container>
-            <RouterProvider router={router} />
-          </Container>
+          <RouterProvider router={router} />
         </UserContextProvider>
       </ThemeProvider>
     </React.StrictMode>
