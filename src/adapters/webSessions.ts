@@ -61,9 +61,10 @@ export const login = async (
 export const logout = async (sessionId: string): Promise<Success<Session> | Failure> => {
   try {
     const baseUrl = process.env.REACT_APP_OSU_SERVICE_API_URL;
-    const response = await fetch(`${baseUrl}/v1/web_sessions/${sessionId}`, {
+    const response = await fetch(`${baseUrl}/v1/web_sessions`, {
       method: "DELETE",
       headers: {
+        Authorization: `Bearer ${webSessionId}`,
         "Content-Type": "application/json",
         "User-Agent": "basic-frontend/v0.0.1",
       },
