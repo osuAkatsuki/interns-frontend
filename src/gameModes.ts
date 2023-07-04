@@ -69,7 +69,8 @@ export const toServerModeFromClientAndRelaxModes = (
 
 export const isRealGameMode = (gameMode: ClientGameMode, relaxMode: RelaxMode) => {
   if (relaxMode === RelaxMode.Vanilla) {
-    return true; // all game modes are allowed for vanilla
+    // all game modes are allowed for vanilla
+    return true;
   } else if (relaxMode === RelaxMode.Relax) {
     // only standard, taiko, and catch are allowed for relax
     return (
