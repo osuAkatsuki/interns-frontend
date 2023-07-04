@@ -16,17 +16,23 @@ import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "
 import { SubmissionStatus } from "../scores";
 
 export const ProfilePage = () => {
-  const [gameMode, setGameMode] = useState(ClientGameMode.Standard);
-  const [relaxMode, setRelaxMode] = useState(RelaxMode.Vanilla);
-  const [bestScores, setBestScores] = useState<Score[] | null>(null);
-  const [account, setAccount] = useState<Account | null>(null);
-  const [recentScores, setRecentScores] = useState<Score[] | null>(null);
-  const [statsData, fetchModeStats] = useState<Stats | null>(null);
-  const rankHistoryData = null; // TODO
-  const [error, setError] = useState("");
   const { accountId } = useParams();
 
-  const osuSession = null;
+  // TODO: better error handling; each component in the page
+  // may be able to raise multiple errors; one global one won't cut it
+  const [error, setError] = useState("");
+
+  const [account, setAccount] = useState<Account | null>(null);
+  const osuSession = null; // TODO
+
+  const [statsData, fetchModeStats] = useState<Stats | null>(null);
+  const rankHistoryData = null; // TODO
+
+  const [gameMode, setGameMode] = useState(ClientGameMode.Standard);
+  const [relaxMode, setRelaxMode] = useState(RelaxMode.Vanilla);
+
+  const [bestScores, setBestScores] = useState<Score[] | null>(null);
+  const [recentScores, setRecentScores] = useState<Score[] | null>(null);
 
   useEffect(() => {
     const fetchProfileAccount = async () => {

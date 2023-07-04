@@ -24,9 +24,11 @@ export default function Navbar() {
   const handleAccountSettingsClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleAccountSettingsClose = () => {
     setAnchorEl(null);
   };
+
   const handleLogout = async () => {
     if (!user) {
       console.warn("User attempted a logout without being logged in");

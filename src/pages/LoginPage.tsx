@@ -14,11 +14,13 @@ export const LoginPage = () => {
   const navigate = useNavigate();
 
   const { setUser } = useUserContext();
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const reRef = useRef<ReCAPTCHA>(null);
 
   const [loginError, setLoginError] = React.useState("");
+
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const reRef = useRef<ReCAPTCHA>(null);
 
   const handleLogin = async () => {
     const recaptchaToken = await reRef.current?.executeAsync();

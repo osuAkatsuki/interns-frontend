@@ -17,10 +17,12 @@ import { getFlagUrl } from "../utils/countries";
 import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "../gameModes";
 
 export const LeaderboardsPage = () => {
-  const [data, setData] = useState<Stats[] | null>(null);
+  const [error, setError] = useState("");
+
   const [gameMode, setGameMode] = useState(ClientGameMode.Standard);
   const [relaxMode, setRelaxMode] = useState(RelaxMode.Vanilla);
-  const [error, setError] = useState("");
+
+  const [data, setData] = useState<Stats[] | null>(null);
 
   useEffect(() => {
     const serverGameMode = toServerModeFromClientAndRelaxModes(gameMode, relaxMode);

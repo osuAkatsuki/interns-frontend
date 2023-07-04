@@ -5,6 +5,7 @@ import { useUserContext } from "../users";
 
 export const HomePage = () => {
   const { user } = useUserContext();
+
   return (
     <Stack
       direction="column"

@@ -14,12 +14,14 @@ export const SignupPage = () => {
   const navigate = useNavigate();
 
   const { setUser } = useUserContext();
+
+  const [signupError, setSignupError] = useState("");
+
   const [username, setUsername] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const reRef = useRef<ReCAPTCHA>(null);
 
-  const [signupError, setSignupError] = useState("");
+  const reRef = useRef<ReCAPTCHA>(null);
 
   const submissionDisabled = () => {
     if (!username) return true;
