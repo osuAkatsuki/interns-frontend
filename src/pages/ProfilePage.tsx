@@ -12,8 +12,12 @@ import { Scores } from "../components/Scores";
 import { RankingGraph } from "../components/RankingGraph";
 import { fetchOneAccount } from "../adapters/accounts";
 import { Account } from "../interfaces/accounts";
+import PublicIcon from "@mui/icons-material/Public";
+import WifiIcon from "@mui/icons-material/Wifi";
+import WifiOffIcon from "@mui/icons-material/WifiOff";
 import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "../gameModes";
 import { SubmissionStatus } from "../scores";
+import { getFlagUrl } from "../utils/countries";
 
 export const ProfilePage = () => {
   const { accountId } = useParams();
@@ -147,15 +151,44 @@ export const ProfilePage = () => {
           <Box>
             {/* Avatar / Name / Online Status */}
             <Paper elevation={3}>
-              <Stack direction="row" spacing={2} sx={{ p: 2 }}>
-                <Avatar
-                  alt="user-avatar"
-                  src="https://a.akatsuki.gg/1001"
-                  sx={{ width: 124, height: 124 }}
-                />
-                <Stack direction="column">
-                  <Typography variant="h5">{account.username}</Typography>
-                  <Typography variant="subtitle1">{osuSession ? "Online" : "Offline"}</Typography>
+              <Stack direction="row" justifyContent="space-between">
+                <Stack direction="row" spacing={2} sx={{ p: 2 }}>
+                  <Avatar
+                    alt="user-avatar"
+                    src="https://a.akatsuki.gg/1001"
+                    sx={{ width: 124, height: 124 }}
+                  />
+                  <Stack direction="column">
+                    <Typography variant="h5">{account.username}</Typography>
+                    {osuSession ? (
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <WifiIcon sx={{ width: 20, height: 20 }} />
+                        <Typography variant="subtitle1">Online</Typography>
+                      </Stack>
+                    ) : (
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <WifiOffIcon sx={{ width: 20, height: 20 }} />
+                        <Typography variant="subtitle1">Offline</Typography>
+                      </Stack>
+                    )}
+                  </Stack>
+                </Stack>
+                <Stack direction="column" justifyContent="flex-end" spacing={2} sx={{ p: 2 }}>
+                  {/* TODO: add a method for fetching global & country rank from the backend */}
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography variant="h4">#1</Typography>
+                    <PublicIcon sx={{ width: 36, height: 36 }} />
+                  </Stack>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography variant="h4">#1</Typography>
+                    <Box
+                      component="img"
+                      width={36}
+                      height={36}
+                      alt="flag-image"
+                      src={getFlagUrl(account.country)}
+                    />
+                  </Stack>
                 </Stack>
               </Stack>
             </Paper>
