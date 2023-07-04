@@ -37,18 +37,6 @@ export const GameplayStats = ({ statsData }: { statsData: Stats }) => {
             </Typography>
           </Stack>
           <Stack direction="row">
-            <Typography sx={{ width: 1 / 2 }}>Play Time</Typography>
-            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-              {formatTimespan(statsData.playTime)}
-            </Typography>
-          </Stack>
-          <Stack direction="row">
-            <Typography sx={{ width: 1 / 2 }}>Play Count</Typography>
-            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-              {formatNumber(statsData.playCount)}
-            </Typography>
-          </Stack>
-          <Stack direction="row">
             <Typography sx={{ width: 1 / 2 }}>Highest Combo</Typography>
             <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
               {formatNumber(statsData.highestCombo)}
@@ -58,6 +46,18 @@ export const GameplayStats = ({ statsData }: { statsData: Stats }) => {
             <Typography sx={{ width: 1 / 2 }}>Total Hits</Typography>
             <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
               {formatNumber(statsData.totalHits)}
+            </Typography>
+          </Stack>
+          <Stack direction="row">
+            <Typography sx={{ width: 1 / 2 }}>Play Count</Typography>
+            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+              {formatNumber(statsData.playCount)}
+            </Typography>
+          </Stack>
+          <Stack direction="row">
+            <Typography sx={{ width: 1 / 2 }}>Play Time</Typography>
+            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
+              {formatTimespan(statsData.playTime) || "Never played"}
             </Typography>
           </Stack>
           <Box sx={{ pt: 1 }}></Box>
