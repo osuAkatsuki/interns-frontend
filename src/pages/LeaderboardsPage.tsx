@@ -35,13 +35,7 @@ export const LeaderboardsPage = () => {
         return;
       }
 
-      console.log("before");
-      console.log("allStats.data", allStats.data);
-      console.log("data", data);
       setData(allStats.data);
-      console.log("after");
-      console.log("allStats.data", allStats.data);
-      console.log("data", data);
     };
 
     // run this asynchronously
@@ -122,7 +116,7 @@ export const LeaderboardsPage = () => {
               {/* TODO: username instead of account id */}
               {data.map((row: Stats) => (
                 <TableRow
-                  key={row.country}
+                  key={row.accountId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell>
