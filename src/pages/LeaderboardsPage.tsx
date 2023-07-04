@@ -60,7 +60,7 @@ export const LeaderboardsPage = () => {
 
       <Stack direction="column" spacing={1}>
         <Typography variant="h4">Leaderboards</Typography>
-        <Stack spacing={1}>
+        <Stack direction="row" justifyContent="space-between" spacing={1}>
           <Stack direction="row" spacing={1}>
             <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Standard)}>
               Standard
