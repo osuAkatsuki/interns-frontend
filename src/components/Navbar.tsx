@@ -129,7 +129,7 @@ export default function Navbar() {
                   <Typography sx={{ pl: 1 }}>Profile</Typography>
                 </Link>
               </MenuItem>
-              {/* <Divider /> */}
+              <Divider />
               <MenuItem onClick={handleAccountSettingsClose}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
