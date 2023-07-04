@@ -126,21 +126,21 @@ export default function Navbar() {
               onClose={handleAccountSettingsClose}
               onClick={handleAccountSettingsClose}
             >
-              <Link to={`/profile/${user.account.accountId}`}>
-                <MenuItem onClick={handleAccountSettingsClose}>
-                  <Avatar src="https://a.akatsuki.gg/1001" />
+              <MenuItem onClick={handleAccountSettingsClose}>
+                <Avatar src="https://a.akatsuki.gg/1001" />
+                <Link to={`/profile/${user.account.accountId}`}>
                   <Typography sx={{ pl: 1 }}>Profile</Typography>
-                </MenuItem>
-              </Link>
+                </Link>
+              </MenuItem>
               <Divider />
-              <Link to="/settings">
-                <MenuItem onClick={handleAccountSettingsClose}>
-                  <ListItemIcon>
-                    <Settings fontSize="small" />
-                  </ListItemIcon>
+              <MenuItem onClick={handleAccountSettingsClose}>
+                <ListItemIcon>
+                  <Settings fontSize="small" />
+                </ListItemIcon>
+                <Link to="/settings">
                   <Typography>Settings</Typography>
-                </MenuItem>
-              </Link>
+                </Link>
+              </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
