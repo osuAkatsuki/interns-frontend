@@ -60,7 +60,7 @@ export default function Navbar() {
                 </Button>
               </Link>
               <Divider orientation="vertical" flexItem />
-              <Link to="/leaderboards" style={{ textDecoration: "none" }}>
+              <Link to="/leaderboards">
                 <Button>
                   <Typography variant="subtitle1">Leaderboards</Typography>
                 </Button>
