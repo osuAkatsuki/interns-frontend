@@ -66,3 +66,20 @@ export const toServerModeFromClientAndRelaxModes = (
   }
   return gameMode;
 };
+
+export const isRealGameMode = (gameMode: ClientGameMode, relaxMode: RelaxMode) => {
+  if (relaxMode === RelaxMode.Vanilla) {
+    return true; // all game modes are allowed for vanilla
+  } else if (relaxMode === RelaxMode.Relax) {
+    // only standard, taiko, and catch are allowed for relax
+    return (
+      gameMode === ClientGameMode.Standard ||
+      gameMode === ClientGameMode.Taiko ||
+      gameMode === ClientGameMode.Catch
+    );
+  } else {
+    // (relaxMode === RelaxMode.Autopilot) {
+    // only standard is allowed for autopilot
+    return gameMode === ClientGameMode.Standard;
+  }
+};
