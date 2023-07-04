@@ -23,7 +23,7 @@ export const Scores = ({ title, scoresData }: { title: string; scoresData: Score
           {title}
         </Typography>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="best scores table">
+          <Table sx={{ minWidth: 650 }} aria-label="scores table">
             <TableHead>
               <TableRow>
                 <TableCell>
