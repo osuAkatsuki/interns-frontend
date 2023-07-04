@@ -20,6 +20,7 @@ import {
   isRealGameMode,
   toServerModeFromClientAndRelaxModes,
 } from "../gameModes";
+import { GameModeSelectionBar } from "../components/GameModeSelectionBar";
 
 export const LeaderboardsPage = () => {
   const [error, setError] = useState("");
@@ -65,61 +66,12 @@ export const LeaderboardsPage = () => {
 
       <Stack direction="column" spacing={1}>
         <Typography variant="h4">Leaderboards</Typography>
-        <Stack direction="row" justifyContent="space-between" spacing={1}>
-          <Stack direction="row" spacing={1}>
-            <Button
-              variant="contained"
-              disabled={!isRealGameMode(ClientGameMode.Standard, relaxMode)}
-              onClick={() => setGameMode(ClientGameMode.Standard)}
-            >
-              Standard
-            </Button>
-            <Button
-              variant="contained"
-              disabled={!isRealGameMode(ClientGameMode.Taiko, relaxMode)}
-              onClick={() => setGameMode(ClientGameMode.Taiko)}
-            >
-              Taiko
-            </Button>
-            <Button
-              variant="contained"
-              disabled={!isRealGameMode(ClientGameMode.Catch, relaxMode)}
-              onClick={() => setGameMode(ClientGameMode.Catch)}
-            >
-              Catch The Beat
-            </Button>
-            <Button
-              variant="contained"
-              disabled={!isRealGameMode(ClientGameMode.Mania, relaxMode)}
-              onClick={() => setGameMode(ClientGameMode.Mania)}
-            >
-              Mania
-            </Button>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <Button
-              variant="contained"
-              disabled={!isRealGameMode(gameMode, RelaxMode.Vanilla)}
-              onClick={() => setRelaxMode(RelaxMode.Vanilla)}
-            >
-              Vanilla
-            </Button>
-            <Button
-              variant="contained"
-              disabled={!isRealGameMode(gameMode, RelaxMode.Relax)}
-              onClick={() => setRelaxMode(RelaxMode.Relax)}
-            >
-              Relax
-            </Button>
-            <Button
-              variant="contained"
-              disabled={!isRealGameMode(gameMode, RelaxMode.Autopilot)}
-              onClick={() => setRelaxMode(RelaxMode.Autopilot)}
-            >
-              Autopilot
-            </Button>
-          </Stack>
-        </Stack>
+        <GameModeSelectionBar
+          gameMode={gameMode}
+          relaxMode={relaxMode}
+          setGameMode={setGameMode}
+          setRelaxMode={setRelaxMode}
+        />
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="leaderboard-table">
             <TableHead>
