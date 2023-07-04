@@ -10,32 +10,9 @@ import {
   TableBody,
 } from "@mui/material";
 import type { Score } from "../interfaces/scores";
+import { getGradeColor } from "../scores";
 import { formatNumber } from "../utils/formatting";
 import { formatMods } from "../utils/mods";
-
-const getGradeColor = (grade: string) => {
-  switch (grade) {
-    case "XH":
-      return "silver";
-    case "X":
-      return "gold";
-    case "SH":
-      return "silver";
-    case "S":
-      return "gold";
-    case "A":
-      return "green";
-    case "B":
-      return "blue";
-    case "C":
-      return "purple";
-    case "D":
-    case "F":
-      return "red";
-    default:
-      return "black";
-  }
-};
 
 export const Scores = ({ title, scoresData }: { title: string; scoresData: Score[] }) => {
   return (

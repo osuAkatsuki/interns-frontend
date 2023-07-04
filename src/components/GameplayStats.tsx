@@ -1,6 +1,7 @@
 import { Box, Paper, Typography, Stack } from "@mui/material";
 import { formatNumber, formatTimespan } from "../utils/formatting";
 import type { Stats } from "../interfaces/stats";
+import { GameplayGrades } from "./GameplayGrades";
 
 export const GameplayStats = ({ statsData }: { statsData: Stats }) => {
   return (
@@ -59,37 +60,8 @@ export const GameplayStats = ({ statsData }: { statsData: Stats }) => {
               {formatNumber(statsData.totalHits)}
             </Typography>
           </Stack>
-          {/* TODO: Make grade counts a custom component of its own */}
-          <Stack direction="row">
-            <Typography sx={{ width: 1 / 2 }}>SS Count (Hidden)</Typography>
-            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-              {formatNumber(statsData.xhCount)}
-            </Typography>
-          </Stack>
-          <Stack direction="row">
-            <Typography sx={{ width: 1 / 2 }}>SS Count (No Hidden)</Typography>
-            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-              {formatNumber(statsData.xCount)}
-            </Typography>
-          </Stack>
-          <Stack direction="row">
-            <Typography sx={{ width: 1 / 2 }}>S Count (Hidden)</Typography>
-            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-              {formatNumber(statsData.shCount)}
-            </Typography>
-          </Stack>
-          <Stack direction="row">
-            <Typography sx={{ width: 1 / 2 }}>S Count (No Hidden)</Typography>
-            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-              {formatNumber(statsData.sCount)}
-            </Typography>
-          </Stack>
-          <Stack direction="row">
-            <Typography sx={{ width: 1 / 2 }}>A Count</Typography>
-            <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-              {formatNumber(statsData.aCount)}
-            </Typography>
-          </Stack>
+          <Box sx={{ pt: 1 }}></Box>
+          <GameplayGrades statsData={statsData} />
         </Stack>
       </Box>
     </Paper>
