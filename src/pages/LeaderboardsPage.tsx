@@ -74,6 +74,9 @@ export const LeaderboardsPage = () => {
             <TableHead>
               <TableRow>
                 <TableCell>
+                  <Typography>Global Rank</Typography>
+                </TableCell>
+                <TableCell>
                   <Typography>Country</Typography>
                 </TableCell>
                 <TableCell>
@@ -98,11 +101,14 @@ export const LeaderboardsPage = () => {
             </TableHead>
             <TableBody>
               {/* TODO: username instead of account id */}
-              {data.map((row: Stats) => (
+              {Object.entries(data).map(([index, row]: [string, Stats]) => (
                 <TableRow
                   key={row.accountId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
+                  <TableCell>
+                    <Typography>#{Number(index) + 1}</Typography>
+                  </TableCell>
                   <TableCell>
                     {/* TODO: dynamic flags */}
                     <Box
