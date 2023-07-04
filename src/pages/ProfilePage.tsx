@@ -15,7 +15,12 @@ import { Account } from "../interfaces/accounts";
 import PublicIcon from "@mui/icons-material/Public";
 import WifiIcon from "@mui/icons-material/Wifi";
 import WifiOffIcon from "@mui/icons-material/WifiOff";
-import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "../gameModes";
+import {
+  ClientGameMode,
+  RelaxMode,
+  isRealGameMode,
+  toServerModeFromClientAndRelaxModes,
+} from "../gameModes";
 import { SubmissionStatus } from "../scores";
 import { getFlagUrl } from "../utils/countries";
 
@@ -195,27 +200,55 @@ export const ProfilePage = () => {
           </Box>
           <Stack direction="row" justifyContent="space-between" spacing={1}>
             <Stack direction="row" spacing={1}>
-              <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Standard)}>
+              <Button
+                variant="contained"
+                disabled={!isRealGameMode(ClientGameMode.Standard, relaxMode)}
+                onClick={() => setGameMode(ClientGameMode.Standard)}
+              >
                 Standard
               </Button>
-              <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Taiko)}>
+              <Button
+                variant="contained"
+                disabled={!isRealGameMode(ClientGameMode.Taiko, relaxMode)}
+                onClick={() => setGameMode(ClientGameMode.Taiko)}
+              >
                 Taiko
               </Button>
-              <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Catch)}>
+              <Button
+                variant="contained"
+                disabled={!isRealGameMode(ClientGameMode.Catch, relaxMode)}
+                onClick={() => setGameMode(ClientGameMode.Catch)}
+              >
                 Catch The Beat
               </Button>
-              <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Mania)}>
+              <Button
+                variant="contained"
+                disabled={!isRealGameMode(ClientGameMode.Mania, relaxMode)}
+                onClick={() => setGameMode(ClientGameMode.Mania)}
+              >
                 Mania
               </Button>
             </Stack>
             <Stack direction="row" spacing={1}>
-              <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Vanilla)}>
+              <Button
+                variant="contained"
+                disabled={!isRealGameMode(gameMode, RelaxMode.Vanilla)}
+                onClick={() => setRelaxMode(RelaxMode.Vanilla)}
+              >
                 Vanilla
               </Button>
-              <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Relax)}>
+              <Button
+                variant="contained"
+                disabled={!isRealGameMode(gameMode, RelaxMode.Relax)}
+                onClick={() => setRelaxMode(RelaxMode.Relax)}
+              >
                 Relax
               </Button>
-              <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Autopilot)}>
+              <Button
+                variant="contained"
+                disabled={!isRealGameMode(gameMode, RelaxMode.Autopilot)}
+                onClick={() => setRelaxMode(RelaxMode.Autopilot)}
+              >
                 Autopilot
               </Button>
             </Stack>
