@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Typography, Paper, Alert, Avatar } from "@mui/material";
+import { Typography, Paper, Alert, Avatar, Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
@@ -12,8 +12,12 @@ import { Scores } from "../components/Scores";
 import { RankingGraph } from "../components/RankingGraph";
 import { fetchOneAccount } from "../adapters/accounts";
 import { Account } from "../interfaces/accounts";
+import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "../gameModes";
+import { SubmissionStatus } from "../scores";
 
 export const ProfilePage = () => {
+  const [gameMode, setGameMode] = useState(ClientGameMode.Standard);
+  const [relaxMode, setRelaxMode] = useState(RelaxMode.Vanilla);
   const [bestScores, setBestScores] = useState<Score[] | null>(null);
   const [account, setAccount] = useState<Account | null>(null);
   const [recentScores, setRecentScores] = useState<Score[] | null>(null);
@@ -45,8 +49,12 @@ export const ProfilePage = () => {
     const fetchProfileBestScores = async () => {
       if (!accountId) return;
 
+      const serverGameMode = toServerModeFromClientAndRelaxModes(gameMode, relaxMode);
+
       const playerBestScores = await fetchManyScores({
         accountId: parseInt(accountId),
+        gameMode: serverGameMode,
+        submissionStatus: SubmissionStatus.Best,
         page: 1,
         pageSize: 50,
         sortBy: "performance_points",
@@ -61,14 +69,17 @@ export const ProfilePage = () => {
 
     // run this asynchronously
     fetchProfileBestScores().catch(console.error);
-  }, [accountId]);
+  }, [accountId, gameMode, relaxMode]);
 
   useEffect(() => {
     const fetchProfileRecentScores = async () => {
       if (!accountId) return;
 
+      const serverGameMode = toServerModeFromClientAndRelaxModes(gameMode, relaxMode);
+
       const playerRecentScores = await fetchManyScores({
-        accountId: parseInt(accountId), // TODO: need to fix backend
+        accountId: parseInt(accountId),
+        gameMode: serverGameMode,
         page: 1,
         pageSize: 50,
         sortBy: "created_at",
@@ -83,16 +94,15 @@ export const ProfilePage = () => {
 
     // run this asynchronously
     fetchProfileRecentScores().catch(console.error);
-  }, [accountId]);
+  }, [accountId, gameMode, relaxMode]);
 
   useEffect(() => {
     const fetchProfileStats = async () => {
       if (!accountId) return;
 
-      const playerStats = await fetchStats(
-        parseInt(accountId), // TODO: need to fix on backend
-        0 // TODO: other gamemodes
-      );
+      const serverGameMode = toServerModeFromClientAndRelaxModes(gameMode, relaxMode);
+
+      const playerStats = await fetchStats(parseInt(accountId), serverGameMode);
       if (playerStats.status === "error") {
         setError("Failed to fetch data from server");
         return;
@@ -103,7 +113,7 @@ export const ProfilePage = () => {
 
     // run this asynchronously
     fetchProfileStats().catch(console.error);
-  }, [accountId]);
+  }, [accountId, gameMode, relaxMode]);
 
   if (!accountId) {
     return (
@@ -144,6 +154,33 @@ export const ProfilePage = () => {
               </Stack>
             </Paper>
           </Box>
+          <Stack direction="row" justifyContent="space-between" spacing={1}>
+            <Stack direction="row" spacing={1}>
+              <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Standard)}>
+                Standard
+              </Button>
+              <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Taiko)}>
+                Taiko
+              </Button>
+              <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Catch)}>
+                Catch The Beat
+              </Button>
+              <Button variant="contained" onClick={() => setGameMode(ClientGameMode.Mania)}>
+                Mania
+              </Button>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Vanilla)}>
+                Vanilla
+              </Button>
+              <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Relax)}>
+                Relax
+              </Button>
+              <Button variant="contained" onClick={() => setRelaxMode(RelaxMode.Autopilot)}>
+                Autopilot
+              </Button>
+            </Stack>
+          </Stack>
           <Stack direction="row" spacing={2} sx={{ justifyContent: "space-evenly" }}>
             <Box sx={{ width: 1 / 3 }}>
               <GameplayStats statsData={statsData} />
