@@ -98,7 +98,7 @@ export const fetchManyScores = async ({
   grade = undefined,
   gameMode = undefined,
   mods = undefined,
-  submissionStatuses = undefined,
+  submissionStatus = undefined,
   friends = undefined,
   beatmapRankedStatus = undefined,
   beatmapSetId = undefined,
@@ -113,7 +113,7 @@ export const fetchManyScores = async ({
   grade?: string;
   gameMode?: number;
   mods?: number;
-  submissionStatuses?: number[];
+  submissionStatus?: number;
   friends?: number[];
   beatmapRankedStatus?: number;
   beatmapSetId?: number;
@@ -131,7 +131,7 @@ export const fetchManyScores = async ({
       grade: grade,
       game_mode: gameMode,
       mods: mods,
-      submission_statuses: submissionStatuses,
+      submission_status: submissionStatus,
       friends: friends,
       beatmap_ranked_status: beatmapRankedStatus,
       beatmap_set_id: beatmapSetId,
