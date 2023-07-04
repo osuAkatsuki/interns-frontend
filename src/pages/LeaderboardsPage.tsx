@@ -61,10 +61,7 @@ export const LeaderboardsPage = () => {
 
   return (
     <>
-      {/* TODO: is this an antipattern? */}
-      <Box sx={{ mt: 2 }}></Box>
-
-      <Stack direction="column" spacing={1}>
+      <Stack direction="column" spacing={1} sx={{ mt: 2 }}>
         <Typography variant="h4">Leaderboards</Typography>
         <GameModeSelectionBar
           gameMode={gameMode}

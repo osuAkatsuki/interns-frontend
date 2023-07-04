@@ -149,10 +149,7 @@ export const ProfilePage = () => {
 
   return (
     <>
-      {/* TODO: is this an antipattern? */}
-      <Box sx={{ mt: 2 }}></Box>
-
-      <Paper elevation={3} sx={{ p: 2 }}>
+      <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
         <Stack direction="column" spacing={2}>
           <Box>
             {/* Avatar / Name / Online Status */}
