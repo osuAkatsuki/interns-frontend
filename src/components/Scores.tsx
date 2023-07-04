@@ -13,6 +13,30 @@ import type { Score } from "../interfaces/scores";
 import { formatNumber } from "../utils/formatting";
 import { formatMods } from "../utils/mods";
 
+const getGradeColor = (grade: string) => {
+  switch (grade) {
+    case "XH":
+      return "silver";
+    case "X":
+      return "gold";
+    case "SH":
+      return "silver";
+    case "S":
+      return "gold";
+    case "A":
+      return "green";
+    case "B":
+      return "blue";
+    case "C":
+      return "purple";
+    case "D":
+    case "F":
+      return "red";
+    default:
+      return "black";
+  }
+};
+
 export const Scores = ({ title, scoresData }: { title: string; scoresData: Score[] }) => {
   return (
     <Paper elevation={3}>
@@ -52,8 +76,10 @@ export const Scores = ({ title, scoresData }: { title: string; scoresData: Score
               {scoresData.map((score: Score) => (
                 <TableRow>
                   {/* TODO: images for the grades */}
-                  <TableCell>
-                    <Typography noWrap={true}>{score.grade}</Typography>
+                  <TableCell align="center">
+                    <Typography variant="h5" color={getGradeColor(score.grade)} noWrap={true}>
+                      {score.grade}
+                    </Typography>
                   </TableCell>
                   {/* TODO: full beatmap name & diffname */}
                   {/* TODO: clickable to go to beatmap page */}
