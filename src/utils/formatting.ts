@@ -1,7 +1,13 @@
 // TODO: proper localiztion
-const NUMBER_FORMAT = new Intl.NumberFormat("en-us");
+const REGULAR_NUMBER_FORMATTER = new Intl.NumberFormat("en-us");
+const DECIMAL_NUMBER_FORMATTER = new Intl.NumberFormat("en-us", {
+  // Always format to 2 decimal places
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
-export const formatNumber = (n: number): string => NUMBER_FORMAT.format(Number(n.toFixed(2)));
+export const formatNumber = (n: number): string => REGULAR_NUMBER_FORMATTER.format(n);
+export const formatDecimal = (n: number): string => DECIMAL_NUMBER_FORMATTER.format(n);
 
 export const formatDate = (date: Date): string => date.toLocaleString("en-US");
 

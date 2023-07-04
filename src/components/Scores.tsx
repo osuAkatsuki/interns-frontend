@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import type { Score } from "../interfaces/scores";
 import { getGradeColor } from "../scores";
-import { formatNumber } from "../utils/formatting";
+import { formatDecimal, formatNumber } from "../utils/formatting";
 import { formatMods } from "../utils/mods";
 
 export const Scores = ({ title, scoresData }: { title: string; scoresData: Score[] }) => {
@@ -67,10 +67,12 @@ export const Scores = ({ title, scoresData }: { title: string; scoresData: Score
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography noWrap={true}>{formatNumber(score.performancePoints)}pp</Typography>
+                    <Typography noWrap={true}>
+                      {formatDecimal(score.performancePoints)}pp
+                    </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography noWrap={true}>{formatNumber(score.accuracy)}%</Typography>
+                    <Typography noWrap={true}>{formatDecimal(score.accuracy)}%</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography noWrap={true}>{formatNumber(score.highestCombo)}x</Typography>

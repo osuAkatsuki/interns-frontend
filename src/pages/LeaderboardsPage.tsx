@@ -11,7 +11,7 @@ import { Alert, Box, Button, Stack, Typography } from "@mui/material";
 import { fetchManyStats } from "../adapters/stats";
 import { useEffect, useState } from "react";
 import { Stats } from "../interfaces/stats";
-import { formatNumber } from "../utils/formatting";
+import { formatDecimal, formatNumber } from "../utils/formatting";
 
 import { getFlagUrl } from "../utils/countries";
 import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "../gameModes";
@@ -140,7 +140,7 @@ export const LeaderboardsPage = () => {
                     <Typography>{formatNumber(row.performancePoints)}pp</Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Typography>{formatNumber(row.accuracy)}%</Typography>
+                    <Typography>{formatDecimal(row.accuracy)}%</Typography>
                   </TableCell>
                   <TableCell align="right">
                     <Typography>{formatNumber(row.rankedScore)}</Typography>

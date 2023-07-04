@@ -1,5 +1,5 @@
 import { Box, Paper, Typography, Stack } from "@mui/material";
-import { formatNumber, formatTimespan } from "../utils/formatting";
+import { formatDecimal, formatNumber, formatTimespan } from "../utils/formatting";
 import type { Stats } from "../interfaces/stats";
 import { GameplayGrades } from "./GameplayGrades";
 
@@ -21,7 +21,7 @@ export const GameplayStats = ({ statsData }: { statsData: Stats }) => {
           <Stack direction="row">
             <Typography sx={{ width: 1 / 2 }}>Overall Accuracy</Typography>
             <Typography sx={{ width: 1 / 2, textAlign: "end" }}>
-              {formatNumber(statsData.accuracy)}%
+              {formatDecimal(statsData.accuracy)}%
             </Typography>
           </Stack>
           <Stack direction="row">
