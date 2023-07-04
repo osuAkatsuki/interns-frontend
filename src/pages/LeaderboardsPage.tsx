@@ -14,12 +14,7 @@ import { Stats } from "../interfaces/stats";
 import { formatDecimal, formatNumber } from "../utils/formatting";
 
 import { getFlagUrl } from "../utils/countries";
-import {
-  ClientGameMode,
-  RelaxMode,
-  isRealGameMode,
-  toServerModeFromClientAndRelaxModes,
-} from "../gameModes";
+import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "../gameModes";
 import { GameModeSelectionBar } from "../components/GameModeSelectionBar";
 
 export const LeaderboardsPage = () => {

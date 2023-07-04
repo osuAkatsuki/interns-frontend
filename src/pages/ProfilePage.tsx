@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Typography, Paper, Alert, Avatar, Button } from "@mui/material";
+import { Typography, Paper, Alert, Avatar } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
@@ -15,12 +15,7 @@ import { Account } from "../interfaces/accounts";
 import PublicIcon from "@mui/icons-material/Public";
 import WifiIcon from "@mui/icons-material/Wifi";
 import WifiOffIcon from "@mui/icons-material/WifiOff";
-import {
-  ClientGameMode,
-  RelaxMode,
-  isRealGameMode,
-  toServerModeFromClientAndRelaxModes,
-} from "../gameModes";
+import { ClientGameMode, RelaxMode, toServerModeFromClientAndRelaxModes } from "../gameModes";
 import { SubmissionStatus } from "../scores";
 import { getFlagUrl } from "../utils/countries";
 import { GameModeSelectionBar } from "../components/GameModeSelectionBar";
