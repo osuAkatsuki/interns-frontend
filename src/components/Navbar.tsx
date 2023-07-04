@@ -76,6 +76,9 @@ export default function Navbar() {
               {/* TODO: add user search bar */}
               {user ? (
                 <>
+                  {/* TODO: player search bar with autocomplete functionality */}
+                  {/* https://mui.com/material-ui/react-autocomplete/#search-as-you-type */}
+                  {/* import { debounce } from '@mui/material/utils'; */}
                   <Link to="/support">
                     {/* TODO: heart emoji */}
                     <IconButton aria-label="support">
