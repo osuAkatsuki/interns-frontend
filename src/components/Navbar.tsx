@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Typography, Button, Stack, Container } from "@mui/material";
+import { Typography, Button, Stack, Container, Autocomplete, TextField } from "@mui/material";
 import { useUserContext, removeUserFromLocalStorage } from "../users";
 import { Link } from "react-router-dom";
 import { logout } from "../adapters/webSessions";
@@ -14,9 +14,45 @@ import {
   Tooltip,
 } from "@mui/material";
 import { FavoriteOutlined, Logout, Settings } from "@mui/icons-material";
+import { debounce } from "@mui/material/utils";
+import { Account } from "../interfaces/accounts";
+import { fetchManyAccounts } from "../adapters/accounts";
 
 export default function Navbar() {
   const { user, setUser } = useUserContext();
+
+  // TODO: more clearly document the use cases for each of these
+  const [searchValue, setSearchValue] = React.useState<Account | null>(null);
+  const [searchInputValue, setSearchInputValue] = React.useState("");
+  const [searchOptions, setSearchOptions] = React.useState<readonly Account[]>([]);
+
+  // Account search bar
+  const fetchSearchResults = React.useMemo(
+    () =>
+      debounce(
+        async (
+          request: { input: string },
+          callback: (results?: readonly Account[]) => void
+        ): Promise<void> => {
+          await fetchManyAccounts();
+        },
+        400 // ms between calls
+      ),
+    []
+  );
+
+  React.useEffect(() => {
+    if (searchInputValue === "") {
+      setSearchOptions([]);
+      return;
+    }
+
+    fetchSearchResults({ input: searchInputValue }, (results?: readonly Account[]) => {
+      if (results) {
+        setSearchOptions(results);
+      }
+    });
+  }, [searchValue, searchInputValue, fetchSearchResults]);
 
   // Account settings menu state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -74,6 +110,46 @@ export default function Navbar() {
             {/* Right Navbar */}
             <Stack direction="row" spacing={1}>
               {/* TODO: add user search bar */}
+              <Autocomplete
+                id="user-search-bar"
+                // disable the built-in filtering
+                filterOptions={(x) => x}
+                options={searchOptions}
+                // TODO: look into these more deeply
+                autoComplete
+                includeInputInList
+                filterSelectedOptions
+                value={searchValue}
+                noOptionsText="hello test"
+                onChange={(event: any, newValue: Account | null) => {
+                  setSearchOptions(newValue ? [newValue, ...searchOptions] : searchOptions);
+                  setSearchValue(newValue);
+                }}
+                onInputChange={(event, newInputValue) => {
+                  setSearchInputValue(newInputValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search for a user"
+                    margin="normal"
+                    variant="outlined"
+                  />
+                )}
+                renderOption={(props, option) => {
+                  const { username } = option;
+                  return (
+                    <li {...props}>
+                      <Stack direction="row" spacing={2}>
+                        {/* TODO: user avatars */}
+                        <Avatar src={"https://a.akatsuki.gg/1001"} />
+                        <Typography variant="subtitle1">{username}</Typography>
+                      </Stack>
+                    </li>
+                  );
+                }}
+              />
+
               {user ? (
                 <>
                   {/* TODO: player search bar with autocomplete functionality */}
