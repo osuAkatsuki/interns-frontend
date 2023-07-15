@@ -25,13 +25,17 @@ export const LeaderboardsPage = () => {
 
   const [data, setData] = useState<Stats[] | null>(null);
 
+  // TODO: buttons for pagination
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 50;
+
   useEffect(() => {
     const serverGameMode = toServerModeFromClientAndRelaxModes(gameMode, relaxMode);
     const fetchData = async () => {
       const allStats = await fetchManyStats({
         gameMode: serverGameMode,
-        page: 1,
-        pageSize: 50,
+        page: page,
+        pageSize: PAGE_SIZE,
       });
       if (allStats.status === "error") {
         setError("Failed to fetch data from server");
