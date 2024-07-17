@@ -18,11 +18,12 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { DocumentationHomePage } from "./pages/DocumentationHomePage";
 import Container from "@mui/material/Container";
 import { UserContextProvider } from "./users";
+import { CssBaseline } from "@mui/material";
 
 const AppLayout = () => (
   <>
     <Navbar />
-    <Container>
+    <Container maxWidth={false}>
       <Outlet />
     </Container>
   </>
@@ -45,15 +46,24 @@ const router = createBrowserRouter(
 
 const theme = createTheme({
   palette: {
+    background: {
+      default: "#110e1b",
+    },
     primary: {
-      main: "#1678c2",
+      main: "#151222",
     },
     secondary: {
-      main: "#e03997",
+      main: "#15122233",
+    },
+    text: {
+      primary: "#ffffff"
     },
   },
   typography: {
-    fontFamily: "Rubik",
+    fontFamily: "Nunito",
+    button: {
+      textTransform: 'none',
+    }
   },
 });
 
@@ -61,6 +71,7 @@ export default function App() {
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <UserContextProvider>
           <RouterProvider router={router} />
         </UserContextProvider>
